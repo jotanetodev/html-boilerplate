@@ -1,0 +1,57 @@
+:root {
+  --color-black: hsl(0, 0%, 5%);
+  --color-white: hsl(0, 0%, 97.5%);
+
+  --color-gray: hsl(0, 0%, 50%);
+  --color-gray-light: hsl(0, 0%, 90%);
+  --color-gray-dark: hsl(0, 0%, 23%);
+
+  --color-accent: hsl(275, 50%, 25%);
+  --color-accent-light: hsl(275, 50%, 75%);
+  --color-accent-dark: hsl(275, 50%, 12.5%);
+
+  --color-red: hsl(0, 65%, 75%);
+  --color-red-light: hsl(0, 65%, 85%);
+  --color-red-dark: hsl(0, 65%, 60%);
+
+  --content-padding-inline: min(5vi, 1rem);
+  --content-inline-size: calc(min(37.5rem, 100%) - (var(--content-padding-inline) * 2));
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  color-scheme: dark light;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: sans-serif;
+  min-height: 100%;
+
+  @media (prefers-color-scheme: light) {
+    background-color: var(--color-white);
+    color: var(--color-gray-dark);
+  }
+}
+
+body>* {
+  inline-size: var(--content-inline-size);
+  margin-inline: auto;
+  padding-inline: var(--content-padding-inline);
+}
+
+h1 {
+  padding-block: 0.25em;
+}
