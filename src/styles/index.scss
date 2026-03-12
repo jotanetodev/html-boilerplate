@@ -1,57 +1,264 @@
+@use "helper" as *;
+@use "container-size" as container-size;
+@use "color" as color;
+
 :root {
-  --color-black: hsl(0, 0%, 5%);
-  --color-white: hsl(0, 0%, 97.5%);
-
-  --color-gray: hsl(0, 0%, 50%);
-  --color-gray-light: hsl(0, 0%, 90%);
-  --color-gray-dark: hsl(0, 0%, 23%);
-
-  --color-accent: hsl(275, 50%, 25%);
-  --color-accent-light: hsl(275, 50%, 75%);
-  --color-accent-dark: hsl(275, 50%, 12.5%);
-
-  --color-red: hsl(0, 65%, 75%);
-  --color-red-light: hsl(0, 65%, 85%);
-  --color-red-dark: hsl(0, 65%, 60%);
-
-  --content-padding-inline: min(5vi, 1rem);
-  --content-inline-size: calc(min(37.5rem, 100%) - (var(--content-padding-inline) * 2));
+  --focus-visible-outline: solid 0.125rem var(--color-opposite, var(--default-accent-color));
 }
 
-*,
-*::before,
-*::after {
+:where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+:where(*) {
   margin: 0;
   padding: 0;
 }
 
-html,
-body {
-  height: 100%;
+:where(:focus-visible) {
+  outline: var(--focus-visible-outline);
 }
 
-html {
-  color-scheme: dark light;
-}
-
-body {
-  background-color: var(--color-black);
-  color: var(--color-white);
+:where(html) {
+  background-color: hsl(from color.get("initial") h s l / 0.125);
+  color: var(--default-text-color);
+  color-scheme: var(--color-scheme);
   font-family: sans-serif;
-  min-height: 100%;
+}
 
-  @media (prefers-color-scheme: light) {
-    background-color: var(--color-white);
-    color: var(--color-gray-dark);
+:where(body) {
+  background-color: var(--default-background-color);
+  font-size: clamp(0.75rem, 0.4cqi + 0.75rem, 2.25rem);
+  min-block-size: 100dvb;
+  padding: min(1rem, 2.5%);
+
+  * {
+    color: inherit;
   }
 }
 
-body>* {
-  inline-size: var(--content-inline-size);
-  margin-inline: auto;
-  padding-inline: var(--content-padding-inline);
+:where(h1, h2, h3, h4, h5, h6, p) {
+  line-height: 1.4;
+
+  &:has(+ *) {
+    margin-block-end: 0.25em;
+  }
 }
 
-h1 {
-  padding-block: 0.25em;
+:where(h1, h2, h3, h4, h5, h6) {
+  max-inline-size: 50ch;
+  text-wrap: balance;
+}
+
+:where(h5, h6) {
+  font-size: 1em;
+}
+
+:where(p) {
+  max-inline-size: 65ch;
+  text-wrap: pretty;
+
+  &:has(+ *:not(&)) {
+    margin-block-end: 0.5em;
+  }
+}
+
+:where(a) {
+  color: light-dark(
+    var(--color-accent-dark, var(--default-accent-color)),
+    var(--color-accent-light, var(--default-accent-color))
+  );
+}
+
+:where(form) {
+  --inner-spacing: 0.25rem;
+  --outer-spacing: 1rem;
+  --input-box-shadow: inset 0 0 0 0.0625rem hsl(from currentColor h s l / 0.25);
+
+  label,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    max-inline-size: 65ch;
+  }
+
+  label,
+  fieldset {
+    gap: var(--inner-spacing) calc(var(--inner-spacing) * 1.25);
+  }
+
+  label:not(:has([type="radio"], [type="checkbox"])),
+  fieldset {
+    margin-block-end: var(--outer-spacing);
+  }
+
+  label:not(:has([type="radio"], [type="checkbox"])),
+  fieldset:not([data-flow="column"]) {
+    display: grid;
+  }
+
+  fieldset {
+    border-width: 0;
+    place-content: start;
+
+    &[data-flow="column"] {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  label:where(:not(:has([type="radio"], [type="checkbox"]))),
+  legend {
+    font-weight: bold;
+  }
+
+  legend {
+    margin-block-end: var(--inner-spacing);
+  }
+
+  input,
+  textarea,
+  select {
+    font-weight: revert;
+  }
+
+  input:where(:not([type="radio"], [type="checkbox"])),
+  textarea,
+  select {
+    background-color: var(--default-background-color);
+    border-width: 0;
+    box-shadow: var(--input-box-shadow);
+    inline-size: 100%;
+    padding: 0.5em 0.75em;
+  }
+
+  input {
+    accent-color: light-dark(color.get("accent"), color.get("accent-dark"));
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:where([type="radio"], [type="checkbox"]) {
+    // aspect-ratio: 1;
+    // block-size: 1lh;
+    // inline-size: 1lh;
+    // order: -1;
+
+    &,
+    label:has(&) {
+      display: inline-block;
+      block-size: 1lh;
+    }
+
+    // label:has(&) {
+    //   align-items: center;
+    //   display: flex;
+    //   column-gap: 0.5ch;
+
+    //   &[data-icon=only] {
+    //     box-shadow: var(--input-box-shadow);
+
+    //     &:has(input:checked) {
+    //       background-color:hsl(from light-dark(
+    //         var(--color-accent, AccentColor), var(--color-accent-dark, AccentColor))
+    //         h s l / 0.5);
+    //     }
+    //   }
+    // }
+
+    &:focus-visible {
+      outline-width: 0;
+
+      label:has(&) {
+        outline: var(--focus-visible-outline);
+      }
+    }
+  }
+}
+
+:where(button) {
+  background-color: light-dark(color.get("accent"), color.get("accent-dark"));
+  border-width: 0;
+  color: color.get("white");
+  cursor: pointer;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0.5em 0.75em;
+}
+
+:where(hr) {
+  color: var(--default-accent-color);
+  margin-block: 1rem;
+}
+
+html.center-page-content body {
+  display: grid;
+  min-inline-size: fit-content;
+  place-content: center;
+}
+
+// [data-icon] {
+//   --icon-size: 1.25em;
+//   --icon-color: currentColor;
+//   --icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQgMTR2NC40YS42LjYgMCAwIDAgLjYuNkgxMG05LTV2NC40YS42LjYgMCAwIDEtLjYuNkgxNG0wLTE0aDQuNGEuNi42IDAgMCAxIC42LjZWMTBNNCAxMFY1LjZhLjYuNiAwIDAgMSAuNi0uNkgxMG00IDE0djFhMiAyIDAgMSAxLTQgMHYtMW0tNi05aDFhMiAyIDAgMSAxIDAgNEg0bTE1LTRoMWEyIDIgMCAxIDEgMCA0aC0xbS01LTlWNGEyIDIgMCAxIDAtNCAwdjEiLz48L3N2Zz4=");
+
+//   &::before {
+//     background-color: var(--icon-color);
+//     block-size: var(--icon-size);
+//     content: "";
+//     display: inline-block;
+//     inline-size: var(--icon-size);
+//     mask-image: var(--icon);
+//     mask-repeat: no-repeat;
+//     mask-size: 100% 100%;
+//   }
+
+//   &[data-icon="only"] {
+//     --padding: 0.25lh;
+//     --size: calc(var(--icon-size) + var(--padding) * 2);
+
+//     block-size: var(--size);
+//     inline-size: var(--size);
+//     overflow: hidden;
+//     padding: var(--padding);
+//     text-wrap: nowrap;
+
+//     &::before {
+//       flex-shrink: 0;
+//       margin-inline-end: var(--padding);
+//       order: -1;
+//     }
+//   }
+// }
+
+dl[aria-label="Colors"] {
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(20ch, 1fr));
+
+  &,
+  div {
+    display: grid;
+  }
+
+  div {
+    gap: 0.125rem;
+  }
+
+  dd {
+    display: flex;
+    overflow: hidden;
+    text-wrap: nowrap;
+
+    &::before {
+      background-color: var(--dd-color);
+      block-size: 1lh;
+      content: "";
+      display: block;
+      flex-shrink: 0;
+      inline-size: 100%;
+    }
+  }
 }
