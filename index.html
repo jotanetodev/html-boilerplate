@@ -1,20 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Boilerplate</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HTML Boilerplate</title>
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
 
-  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+    <link rel="stylesheet" href="public/styles.css" />
 
-  <link rel="stylesheet" href="public/styles.css" />
+    <script src="public/scripts.js" defer></script>
+  </head>
 
-  <script src="public/scripts.js" defer></script>
-</head>
+  <body>
+    <h1>HTML Boilerplate</h1>
 
-<body>
-  <h1>HTML Boilerplate</h1>
-</body>
+    <dl aria-label="Colors">
+      <div>
+        <dt>--color-black</dt>
+        <dd style="--dd-color: var(--color-black)">hsl(from var(--color) h 1.25% 2.5%)</dd>
+      </div>
+      <div>
+        <dt>--color-white</dt>
+        <dd style="--dd-color: var(--color-white)">hsl(from var(--color) h 1.25% 97.5%)</dd>
+      </div>
+      <div>
+        <dt>--color-accent</dt>
+        <dd style="--dd-color: var(--color-accent)">hsl(from var(--color) h 75% 50%)</dd>
+      </div>
+      <div>
+        <dt>--color-accent-lighter</dt>
+        <dd style="--dd-color: var(--color-accent-lighter)">hsl(from var(--color) h s 87.5%)</dd>
+      </div>
+      <div>
+        <dt>--color-accent-light</dt>
+        <dd style="--dd-color: var(--color-accent-light)">hsl(from var(--color) h s 75%)</dd>
+      </div>
+      <div>
+        <dt>--color-accent-dark</dt>
+        <dd style="--dd-color: var(--color-accent-dark)">hsl(from var(--color) h s 25%)</dd>
+      </div>
+      <div>
+        <dt>--color-accent-darker</dt>
+        <dd style="--dd-color: var(--color-accent-darker)">hsl(from var(--color) h s 12.5%)</dd>
+      </div>
+      <div>
+        <dt>--color-opposite</dt>
+        <dd style="--dd-color: var(--color-opposite)">hsl(from var(--color-accent) calc(h + 180) s l)</dd>
+      </div>
+      <div>
+        <dt>--color-opposite-lighter</dt>
+        <dd style="--dd-color: var(--color-opposite-lighter)">
+          hsl(from var(--color-accent-lighter) calc(h + 180) s l)
+        </dd>
+      </div>
+      <div>
+        <dt>--color-opposite-light</dt>
+        <dd style="--dd-color: var(--color-opposite-light)">hsl(from var(--color-accent-light) calc(h + 180) s l)</dd>
+      </div>
+      <div>
+        <dt>--color-opposite-dark</dt>
+        <dd style="--dd-color: var(--color-opposite-dark)">hsl(from var(--color-accent-dark) calc(h + 180) s l)</dd>
+      </div>
+      <div>
+        <dt>--color-opposite-darker</dt>
+        <dd style="--dd-color: var(--color-opposite-darker)">hsl(from var(--color-accent-darker) calc(h + 180) s l)</dd>
+      </div>
+    </dl>
 
+    <hr />
+
+    <h1>Heading 1</h1>
+    <h2>Heading 2</h2>
+    <h3>Heading 3</h3>
+    <h4>Heading 4</h4>
+    <h5>Heading 5</h5>
+    <h6>Heading 6</h6>
+
+    <hr />
+
+    <p>Asperiores, ut voluptas, reiciendis et beatae qui, pariatur tempora eligendi possimus nobis cupiditate.</p>
+    <p>
+      Lorem ipsum dolor sit, amet
+      <em>consectetur</em>
+      adipisicing elit.
+      <a href="#">Modi cupiditate</a>
+      , illum sed nihil
+      <strong>dolorum</strong>
+      alias iste?
+    </p>
+
+    <hr />
+
+    <button type="button">Button</button>
+    <button type="button" data-icon>Button with icon</button>
+    <button type="button" data-icon="only">Icon only button</button>
+
+    <hr />
+
+    <form action="">
+      <label for="input-text">
+        Text input
+        <input type="text" name="input-text" id="input-text" />
+      </label>
+
+      <label for="textarea">
+        Textarea
+        <textarea name="textarea" id="textarea"></textarea>
+      </label>
+
+      <label for="select">
+        Select
+        <select name="select" id="select">
+          <option value="">-</option>
+          <option value="value-1">Option 1</option>
+          <option value="value-2">Option 2</option>
+          <option value="value-3">Option 3</option>
+          <option value="value-4">Option 4</option>
+          <option value="value-5">Option 5</option>
+        </select>
+      </label>
+
+      <fieldset>
+        <legend>Radio group</legend>
+
+        <label for="input-radio-1">
+          <input type="radio" name="input-radio" id="input-radio-1" value="value-1" />
+          Option 1
+        </label>
+        <label for="input-radio-2" data-icon>
+          <input type="radio" name="input-radio" id="input-radio-2" value="value-2" />
+          Option 2
+        </label>
+        <label for="input-radio-3">
+          <input type="radio" name="input-radio" id="input-radio-3" value="value-3" />
+          Option 3
+        </label>
+        <label for="input-radio-4">
+          <input type="radio" name="input-radio" id="input-radio-4" value="value-4" />
+          Option 4
+        </label>
+        <label for="input-radio-5">
+          <input type="radio" name="input-radio" id="input-radio-5" value="value-5" />
+          Option 5
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Checkbox group</legend>
+
+        <label for="input-checkbox-1">
+          <input type="checkbox" name="input-checkbox" id="input-checkbox-1" value="value-1" />
+          Option 1
+        </label>
+        <label for="input-checkbox-2" data-icon>
+          <input type="checkbox" name="input-checkbox" id="input-checkbox-2" value="value-2" />
+          Option 2
+        </label>
+        <label for="input-checkbox-3">
+          <input type="checkbox" name="input-checkbox" id="input-checkbox-3" value="value-3" />
+          Option 3
+        </label>
+        <label for="input-checkbox-4">
+          <input type="checkbox" name="input-checkbox" id="input-checkbox-4" value="value-4" />
+          Option 4
+        </label>
+        <label for="input-checkbox-5">
+          <input type="checkbox" name="input-checkbox" id="input-checkbox-5" value="value-5" />
+          Option 5
+        </label>
+      </fieldset>
+
+      <fieldset data-flow="column">
+        <legend>Radio icon group</legend>
+
+        <label for="input-radio-icon-1" data-icon="only">
+          <input type="radio" name="input-radio-icon" id="input-radio-icon-1" value="value-1" />
+          Option 1
+        </label>
+        <label for="input-radio-icon-2" data-icon="only">
+          <input type="radio" name="input-radio-icon" id="input-radio-icon-2" value="value-2" />
+          Option 2
+        </label>
+        <label for="input-radio-icon-3" data-icon="only">
+          <input type="radio" name="input-radio-icon" id="input-radio-icon-3" value="value-3" />
+          Option 3
+        </label>
+        <label for="input-radio-icon-4" data-icon="only">
+          <input type="radio" name="input-radio-icon" id="input-radio-icon-4" value="value-4" />
+          Option 4
+        </label>
+        <label for="input-radio-icon-5" data-icon="only">
+          <input type="radio" name="input-radio-icon" id="input-radio-icon-5" value="value-5" />
+          Option 5
+        </label>
+      </fieldset>
+
+      <fieldset data-flow="column">
+        <legend>Checkbox icon group</legend>
+
+        <label for="input-checkbox-icon-1" data-icon="only">
+          <input type="checkbox" name="input-checkbox-icon" id="input-checkbox-icon-1" value="value-1" />
+          Option 1
+        </label>
+        <label for="input-checkbox-icon-2" data-icon="only">
+          <input type="checkbox" name="input-checkbox-icon" id="input-checkbox-icon-2" value="value-2" />
+          Option 2
+        </label>
+        <label for="input-checkbox-icon-3" data-icon="only">
+          <input type="checkbox" name="input-checkbox-icon" id="input-checkbox-icon-3" value="value-3" />
+          Option 3
+        </label>
+        <label for="input-checkbox-icon-4" data-icon="only">
+          <input type="checkbox" name="input-checkbox-icon" id="input-checkbox-icon-4" value="value-4" />
+          Option 4
+        </label>
+        <label for="input-checkbox-icon-5" data-icon="only">
+          <input type="checkbox" name="input-checkbox-icon" id="input-checkbox-icon-5" value="value-5" />
+          Option 5
+        </label>
+      </fieldset>
+
+      <label for="input-single-checkbox">
+        Single checkbox
+        <input type="checkbox" name="input-single-checkbox" id="input-single-checkbox" />
+      </label>
+    </form>
+  </body>
 </html>
