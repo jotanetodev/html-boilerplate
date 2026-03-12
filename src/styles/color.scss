@@ -1,0 +1,74 @@
+@use "helper" as *;
+
+$names: (
+  "initial",
+  "black",
+  "white",
+  "red",
+  "yellow",
+  "green",
+  "accent",
+  "accent-lighter",
+  "accent-light",
+  "accent-dark",
+  "accent-darker",
+  "opposite",
+  "opposite-lighter",
+  "opposite-light",
+  "opposite-dark",
+  "opposite-darker"
+);
+
+@mixin set($name, $base: "initial", $h: h, $s: s, $l: l) {
+  @if valid-in-list($names, $name) and valid-in-list($names, $base) {
+    --color-#{$name}:
+      hsl(from var(--color-#{$base}) #{$h} #{$s} #{$l});
+  }
+}
+
+@function get($name, $opacity: 1) {
+  @if valid-in-list($names, $name) {
+    @if ($opacity == 1) {
+      @return #{"var(--color-#{$name})"};
+    }
+
+    @return #{"hsl(from var(--color-#{$name}) h s l / #{$opacity})"};
+  }
+}
+
+/*********/
+/* COLOR */
+/*********/
+
+:root {
+  --color-scheme: dark light;
+}
+
+:root {
+  /* base */
+  --color-initial: indigo;
+  /* neutral */
+  @include set("black", $s: 1.25%, $l: 2.5%);
+  @include set("white", $s: 1.25%, $l: 97.5%);
+  /* informational */
+  @include set("red", $h: 0);
+  @include set("yellow", $h: 64);
+  @include set("green", $h: 128);
+  /* accent */
+  @include set("accent", $s: 75%, $l: 50%);
+  @include set("accent-lighter", $base: "accent", $l: 87.5%);
+  @include set("accent-light", $base: "accent", $l: 75%);
+  @include set("accent-dark", $base: "accent", $l: 25%);
+  @include set("accent-darker", $base: "accent", $l: 12.5%);
+  /* opposite */
+  @include set("opposite", $h: calc(h + 180), $s: 75%, $l: 50%);
+  @include set("opposite-lighter", $base: "opposite", $l: 87.5%);
+  @include set("opposite-light", $base: "opposite", $l: 75%);
+  @include set("opposite-dark", $base: "opposite", $l: 25%);
+  @include set("opposite-darker", $base: "opposite", $l: 12.5%);
+}
+
+:root {
+  --default-background-color: light-dark(#{get("white")}, #{get("black")});
+  --default-text-color: light-dark(#{get("black")}, #{get("white")});
+}

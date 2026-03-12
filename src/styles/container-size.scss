@@ -1,0 +1,70 @@
+@use "sass:map";
+@use "helper" as *;
+
+$sizes: (
+  "extra-small": 150px,
+  "small": 390px,
+  "medium": 769px,
+  "large": 1280px,
+  "extra-large": 2048px,
+);
+
+$size-names: map.keys($sizes);
+
+@mixin set($size) {
+  @if valid-in-list($size-names, $size) {
+    --container-size-#{$size}: #{get($size)};
+  }
+}
+
+@function get($size, $as-custom-property: false) {
+  @if valid-in-list($size-names, $size) {
+    @if $as-custom-property == false {
+      @return map.get($sizes, $size);
+    }
+    @return #{"var(--container-size-#{$size})"};
+  }
+}
+
+@mixin container($container, $operator, $size) {
+  @if valid-in-list($size-names, $size) {
+    @if (valid-in-list(("<", "<=", ">", ">="), $operator)) {
+      @container #{$container} (#{inline-size #{$operator} #{get($size)}}) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin breakpoint($operator, $size) {
+  @if valid-in-list($size-names, $size) {
+    @if (valid-in-list(("min", "max", "<", "<=", ">", ">="), $operator)) {
+      @if $operator == "min" or $operator == "max" {
+        @media screen and (#{$operator}-width: get($size)) {
+          @content;
+        }
+      } @else {
+        @include container("--root", $operator, $size) {
+          @content;
+        }
+      }
+    }
+  }
+}
+
+/******************/
+/* CONTAINER SIZE */
+/******************/
+
+:root {
+  @include set("extra-small");
+  @include set("small");
+  @include set("medium");
+  @include set("large");
+  @include set("extra-large");
+}
+
+:root {
+  container-type: inline-size;
+  container-name: --root;
+}

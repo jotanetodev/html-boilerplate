@@ -1,0 +1,28 @@
+@use "sass:list";
+
+@function valid-in-list($list, $key) {
+  @if not list.index($list, $key) {
+    @error "Invalid key: #{$key}. Valid keys are: #{list.join($list, ())}. Use quoted strings.";
+  }
+  @return true;
+}
+
+@function px-to-rem($px, $rem-base: 16) {
+  @return ($px / $rem-base) * 1rem;
+}
+
+/**********/
+/* HELPER */
+/**********/
+
+[data-sro] {
+  border: 0;
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  inline-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+}
