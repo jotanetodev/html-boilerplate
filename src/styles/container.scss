@@ -26,7 +26,7 @@ $size-names: map.keys($sizes);
   }
 }
 
-@mixin container($container, $operator, $size) {
+@mixin contain($container, $operator, $size) {
   @if valid-in-list($size-names, $size) {
     @if (valid-in-list(("<", "<=", ">", ">="), $operator)) {
       @container #{$container} (#{inline-size #{$operator} #{get($size)}}) {
@@ -44,7 +44,7 @@ $size-names: map.keys($sizes);
           @content;
         }
       } @else {
-        @include container("--root", $operator, $size) {
+        @include contain("--root", $operator, $size) {
           @content;
         }
       }
@@ -52,9 +52,9 @@ $size-names: map.keys($sizes);
   }
 }
 
-/******************/
-/* CONTAINER SIZE */
-/******************/
+/*************/
+/* CONTAINER */
+/*************/
 
 :root {
   @include set("extra-small");
