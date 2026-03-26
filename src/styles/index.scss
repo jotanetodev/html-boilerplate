@@ -1,5 +1,9 @@
 @use "base";
 
+/***********/
+/* PROJECT */
+/***********/
+
 dl[aria-label="Colors"] {
   gap: 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(20ch, 1fr));
