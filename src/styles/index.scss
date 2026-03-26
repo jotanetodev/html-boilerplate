@@ -142,32 +142,9 @@
   }
 
   input:where([type="radio"], [type="checkbox"]) {
-    // aspect-ratio: 1;
-    // block-size: 1lh;
-    // inline-size: 1lh;
-    // order: -1;
-
-    &,
-    label:has(&) {
-      display: inline-block;
-      block-size: 1lh;
-    }
-
-    // label:has(&) {
-    //   align-items: center;
-    //   display: flex;
-    //   column-gap: 0.5ch;
-
-    //   &[data-icon=only] {
-    //     box-shadow: var(--input-box-shadow);
-
-    //     &:has(input:checked) {
-    //       background-color:hsl(from light-dark(
-    //         var(--color-accent, AccentColor), var(--color-accent-dark, AccentColor))
-    //         h s l / 0.5);
-    //     }
-    //   }
-    // }
+    block-size: 1lh;
+    inline-size: 0.85lh;
+    vertical-align: bottom;
 
     &:focus-visible {
       outline-width: 0;
