@@ -98,6 +98,10 @@
     display: grid;
   }
 
+  label:has(input, textarea) {
+    cursor: pointer;
+  }
+
   fieldset {
     border-width: 0;
     place-content: start;
@@ -145,6 +149,7 @@
     block-size: 1lh;
     inline-size: 0.85lh;
     vertical-align: bottom;
+    cursor: pointer;
 
     &:focus-visible {
       outline-width: 0;
