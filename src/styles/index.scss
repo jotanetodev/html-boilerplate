@@ -151,6 +151,29 @@
     vertical-align: bottom;
     cursor: pointer;
 
+    label[data-icon]:has(&) {
+      display: flex;
+
+      input {
+        order: -1;
+      }
+
+      &[data-icon="only"] {
+        --icon-margin: var(--inner-spacing);
+
+        box-shadow: var(--input-box-shadow);
+        
+        &:has(input:checked) {
+          background-color: var(--default-accent-color);
+          color: light-dark(var(--color-white), currentColor);
+        }
+        
+        input {
+          @extend .sro;
+        }
+      }
+    }
+
     &:focus-visible {
       outline-width: 0;
 
@@ -182,39 +205,55 @@ html.center-page-content body {
   place-content: center;
 }
 
-// [data-icon] {
-//   --icon-size: 1.25em;
-//   --icon-color: currentColor;
-//   --icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQgMTR2NC40YS42LjYgMCAwIDAgLjYuNkgxMG05LTV2NC40YS42LjYgMCAwIDEtLjYuNkgxNG0wLTE0aDQuNGEuNi42IDAgMCAxIC42LjZWMTBNNCAxMFY1LjZhLjYuNiAwIDAgMSAuNi0uNkgxMG00IDE0djFhMiAyIDAgMSAxLTQgMHYtMW0tNi05aDFhMiAyIDAgMSAxIDAgNEg0bTE1LTRoMWEyIDIgMCAxIDEgMCA0aC0xbS01LTlWNGEyIDIgMCAxIDAtNCAwdjEiLz48L3N2Zz4=");
+[data-icon] {
+  --icon-size: 1lh;
+  --icon-color: currentColor;
+  --icon-spacing: 0.25ch;
+  --icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQgMTR2NC40YS42LjYgMCAwIDAgLjYuNkgxMG05LTV2NC40YS42LjYgMCAwIDEtLjYuNkgxNG0wLTE0aDQuNGEuNi42IDAgMCAxIC42LjZWMTBNNCAxMFY1LjZhLjYuNiAwIDAgMSAuNi0uNkgxMG00IDE0djFhMiAyIDAgMSAxLTQgMHYtMW0tNi05aDFhMiAyIDAgMSAxIDAgNEg0bTE1LTRoMWEyIDIgMCAxIDEgMCA0aC0xbS01LTlWNGEyIDIgMCAxIDAtNCAwdjEiLz48L3N2Zz4=");
 
-//   &::before {
-//     background-color: var(--icon-color);
-//     block-size: var(--icon-size);
-//     content: "";
-//     display: inline-block;
-//     inline-size: var(--icon-size);
-//     mask-image: var(--icon);
-//     mask-repeat: no-repeat;
-//     mask-size: 100% 100%;
-//   }
 
-//   &[data-icon="only"] {
-//     --padding: 0.25lh;
-//     --size: calc(var(--icon-size) + var(--padding) * 2);
+  &::before,
+  &::after {
+    background-color: var(--icon-color);
+    block-size: var(--icon-size);
+    display: inline-block;
+    inline-size: var(--icon-size);
+    mask-image: var(--icon);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    vertical-align: bottom;
+  }
 
-//     block-size: var(--size);
-//     inline-size: var(--size);
-//     overflow: hidden;
-//     padding: var(--padding);
-//     text-wrap: nowrap;
+  &[data-icon=""]::before,
+  &[data-icon="start"]::before,
+  &[data-icon="only"]::before {
+    content: "";
+  }
 
-//     &::before {
-//       flex-shrink: 0;
-//       margin-inline-end: var(--padding);
-//       order: -1;
-//     }
-//   }
-// }
+  &[data-icon=""]::before,
+  &[data-icon="start"]::before {
+    margin-inline-end: var(--icon-spacing);
+  }
+
+  &[data-icon="end"]::after {
+    content: "";
+    margin-inline-start: var(--icon-spacing);
+  }
+
+  &[data-icon="only"] {
+    --icon-margin: 0em;
+    --icon-parent-size: calc(var(--icon-size) + var(--icon-margin) * 2);
+    
+    block-size: var(--icon-parent-size);
+    display: flow-root;
+    inline-size: var(--icon-parent-size);
+    overflow: hidden;
+
+    &::before {
+      margin: var(--icon-margin);
+    }
+  }
+}
 
 dl[aria-label="Colors"] {
   gap: 0.5rem;
