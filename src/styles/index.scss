@@ -280,3 +280,11 @@ dl[aria-label="Colors"] {
     }
   }
 }
+
+body > span[data-icon] {
+  display: block;
+
+  & + & {
+    margin-block-start: 0.25em;
+  }
+}
