@@ -71,4 +71,5 @@ $names: (
 :root {
   --default-background-color: light-dark(#{get("white")}, #{get("black")});
   --default-text-color: light-dark(#{get("black")}, #{get("white")});
+  --default-accent-color: light-dark(#{get("accent")}, #{get("accent-dark")});
 }
