@@ -2,18 +2,23 @@
   "name": "html-boilerplate",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"yarn watch:css\" \"yarn watch:js\" \"yarn serve\"",
+    "dev": "concurrently \"yarn watch:css:custom\" \"yarn watch:js\" \"yarn serve\"",
     "serve": "node --enable-source-maps ./node_modules/live-server/live-server.js --no-browser",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/index.scss public/styles.css --watch --no-source-map",
-    "build": "yarn build:js && yarn build:css",
+    "watch:css:custom": "node scripts/custom-sass-compiler.mjs src/styles/index.scss public/styles.css --watch --no-source-map",
+    "build": "yarn build:js && yarn build:css:custom",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
-    "build:css": "sass src/styles/index.scss public/styles.css --style=compressed --no-source-map"
+    "build:css": "sass src/styles/index.scss public/styles.css --style=compressed --no-source-map",
+    "build:css:custom": "node scripts/custom-sass-compiler.mjs src/styles/index.scss public/styles.css --style=compressed --no-source-map"
   },
   "devDependencies": {
+    "chokidar": "^4.0.3",
     "concurrently": "^8.2.2",
     "esbuild": "^0.20.0",
     "live-server": "^1.2.2",
+    "postcss": "^8.4.47",
+    "postcss-scss": "^4.0.1",
     "sass": "^1.69.5"
   }
 }
