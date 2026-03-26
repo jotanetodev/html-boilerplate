@@ -86,7 +86,7 @@
 
   label,
   fieldset {
-    gap: var(--inner-spacing) calc(var(--inner-spacing) * 1.25);
+    row-gap: calc(var(--inner-spacing) * 1.25);
   }
 
   label:not(:has([type="radio"], [type="checkbox"])),
@@ -108,6 +108,7 @@
     place-content: start;
 
     &[data-flow="column"] {
+      column-gap: var(--inner-spacing);
       display: flex;
       flex-wrap: wrap;
     }
@@ -187,7 +188,6 @@
   color: color.get("white");
   cursor: pointer;
   font-size: inherit;
-  line-height: 1;
   padding: 0.5em 0.75em;
 }
 
