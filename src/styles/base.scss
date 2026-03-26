@@ -200,6 +200,10 @@
   margin-block: 1rem;
 }
 
+:where(br) {
+  display: none;
+}
+
 html.center-page-content body {
   display: grid;
   min-inline-size: fit-content;
