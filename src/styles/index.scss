@@ -27,6 +27,7 @@
 }
 
 :where(body) {
+  accent-color: var(--default-accent-color);
   background-color: var(--default-background-color);
   font-size: clamp(0.75rem, 0.4cqi + 0.75rem, 2.25rem);
   min-block-size: 100dvb;
@@ -135,10 +136,6 @@
     box-shadow: var(--input-box-shadow);
     inline-size: 100%;
     padding: 0.5em 0.75em;
-  }
-
-  input {
-    accent-color: light-dark(color.get("accent"), color.get("accent-dark"));
   }
 
   textarea {
