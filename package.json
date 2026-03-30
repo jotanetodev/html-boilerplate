@@ -2,12 +2,12 @@
   "name": "html-boilerplate",
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"yarn watch:css:custom\" \"yarn watch:js\" \"yarn serve\"",
-    "serve": "node --enable-source-maps ./node_modules/live-server/live-server.js --no-browser",
+    "dev": "concurrently \"npm run watch:css:custom\" \"npm run watch:js\" \"npm run serve\"",
+    "serve": "live-server --no-browser",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/index.scss public/styles.css --watch --no-source-map",
     "watch:css:custom": "node scripts/custom-sass-compiler.mjs src/styles/index.scss public/styles.css --watch --no-source-map",
-    "build": "yarn build:js && yarn build:css:custom",
+    "build": "npm run build:js && npm run build:css:custom",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
     "build:css": "sass src/styles/index.scss public/styles.css --style=compressed --no-source-map",
     "build:css:custom": "node scripts/custom-sass-compiler.mjs src/styles/index.scss public/styles.css --style=compressed --no-source-map"
