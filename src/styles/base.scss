@@ -144,15 +144,7 @@
   cursor: pointer;
 
   label[data-icon]:has(&) {
-    display: flex;
-
-    input {
-      order: -1;
-    }
-
     &[data-icon="only"] {
-      --icon-margin: var(--inner-spacing);
-
       box-shadow: var(--input-box-shadow);
 
       &:has(input:checked) {
@@ -160,8 +152,8 @@
         color: light-dark(var(--color-white), currentColor);
       }
 
-      input {
-        @extend .sro;
+      &::before {
+        margin: var(--inner-spacing);
       }
     }
   }
@@ -215,7 +207,7 @@ html.presenter body {
 [data-icon] {
   --icon-size: 1lh;
   --icon-color: currentColor;
-  --icon-spacing: 0.25ch;
+  --icon-spacing: calc(1lh - 1em);
   --icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQgMTR2NC40YS42LjYgMCAwIDAgLjYuNkgxMG05LTV2NC40YS42LjYgMCAwIDEtLjYuNkgxNG0wLTE0aDQuNGEuNi42IDAgMCAxIC42LjZWMTBNNCAxMFY1LjZhLjYuNiAwIDAgMSAuNi0uNkgxMG00IDE0djFhMiAyIDAgMSAxLTQgMHYtMW0tNi05aDFhMiAyIDAgMSAxIDAgNEg0bTE1LTRoMWEyIDIgMCAxIDEgMCA0aC0xbS01LTlWNGEyIDIgMCAxIDAtNCAwdjEiLz48L3N2Zz4=");
 
   &::before,
@@ -232,8 +224,9 @@ html.presenter body {
 
   &[data-icon=""]::before,
   &[data-icon="start"]::before,
-  &[data-icon="only"]::before {
-    content: "";
+  &[data-icon="only"]::before,
+  &[data-icon="end"]::after {
+    content: " ";
   }
 
   &[data-icon=""]::before,
@@ -242,21 +235,26 @@ html.presenter body {
   }
 
   &[data-icon="end"]::after {
-    content: "";
     margin-inline-start: var(--icon-spacing);
   }
 
   &[data-icon="only"] {
-    --icon-margin: 0em;
-    --icon-parent-size: calc(var(--icon-size) + var(--icon-margin) * 2);
-
-    block-size: var(--icon-parent-size);
-    display: flow-root;
-    inline-size: var(--icon-parent-size);
+    display: grid;
+    grid-template-columns: auto 0rem;
     overflow: hidden;
+    padding-inline: 0;
+    text-wrap: nowrap;
+
+    &:where(span, a, strong, em, mark, del, ins, code, kbd, samp) {
+      display: inline-grid;
+    }
+
+    * {
+      @extend .sro;
+    }
 
     &::before {
-      margin: var(--icon-margin);
+      place-self: center;
     }
   }
 }
