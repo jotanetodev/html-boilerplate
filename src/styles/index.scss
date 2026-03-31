@@ -1,8 +1,6 @@
-@use "base";
+@use "./base/index";
 
-/***********/
-/* PROJECT */
-/***********/
+/* -- PROJECT  -- */
 
 dl[aria-label="Colors"] {
   gap: 0.5rem;

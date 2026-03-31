@@ -2,9 +2,7 @@
 @use "container" as container;
 @use "color" as color;
 
-/********/
-/* BASE */
-/********/
+/* -- BASE  -- */
 
 :root {
   --focus-visible-outline: solid 0.125rem var(--color-opposite, var(--default-accent-color));
