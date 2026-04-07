@@ -3,4 +3,5 @@ node_modules/
 package-lock.json
 
 public/scripts.js
+public/styles-base.css
 public/styles.css

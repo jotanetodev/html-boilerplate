@@ -5,10 +5,10 @@
     "dev": "concurrently \"npm run watch:css\" \"npm run watch:js\" \"npm run serve\"",
     "serve": "live-server --no-browser",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
-    "watch:css": "sass src/styles/index.scss public/styles.css --watch --no-source-map",
+    "watch:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --watch --poll --no-source-map",
     "build": "npm run build:js && npm run build:css",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
-    "build:css": "sass src/styles/index.scss public/styles.css --style=compressed --no-source-map"
+    "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
