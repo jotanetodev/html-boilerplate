@@ -142,6 +142,14 @@
   vertical-align: bottom;
   cursor: pointer;
 
+  &:focus-visible {
+    outline-width: 0;
+
+    :where(label):has(&) {
+      outline: var(--focus-visible-outline);
+    }
+  }
+
   label[data-icon]:has(&) {
     &[data-icon="only"] {
       box-shadow: var(--input-box-shadow);
@@ -154,14 +162,6 @@
       &::before {
         margin: var(--inner-spacing);
       }
-    }
-  }
-
-  &:focus-visible {
-    outline-width: 0;
-
-    label:has(&) {
-      outline: var(--focus-visible-outline);
     }
   }
 }
