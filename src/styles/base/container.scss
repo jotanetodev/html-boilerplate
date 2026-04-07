@@ -52,7 +52,7 @@ $size-names: map.keys($sizes);
   }
 }
 
-/* -- CONTAINER  -- */
+/* CONTAINER ------------------------*/
 
 :root {
   @include set("extra-small");

@@ -3,7 +3,7 @@
 @use "color" as color;
 @use "utility";
 
-/* -- BASE  -- */
+/* BASE -----------------------------*/
 
 :root {
   --focus-visible-outline: solid 0.125rem var(--color-opposite, var(--default-accent-color));

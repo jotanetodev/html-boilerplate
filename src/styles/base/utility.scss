@@ -1,6 +1,6 @@
 @use "helper" as *;
 
-/* -- UTILITY  -- */
+/* UTILITY --------------------------*/
 
 .sro,
 [data-sro] {
@@ -99,7 +99,7 @@ html.presenter body {
   }
 }
 
-/* -- UTILITY [extended]  -- */
+/* UTILITY [extension]  -------------*/
 
 .sro-extended {
   @include sro;
