@@ -149,21 +149,6 @@
       outline: var(--focus-visible-outline);
     }
   }
-
-  label[data-icon]:has(&) {
-    &[data-icon="only"] {
-      box-shadow: var(--input-box-shadow);
-
-      &:has(input:checked) {
-        background-color: var(--default-accent-color);
-        color: light-dark(var(--color-white), currentColor);
-      }
-
-      &::before {
-        margin: var(--inner-spacing);
-      }
-    }
-  }
 }
 
 :where(button) {

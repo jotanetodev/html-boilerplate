@@ -60,6 +60,19 @@
       place-self: center;
     }
   }
+
+  &[data-icon="only"]:where(label:has(input:where([type="radio"], [type="checkbox"]))) {
+    box-shadow: var(--input-box-shadow);
+
+    &:has(input:checked) {
+      background-color: var(--default-accent-color);
+      color: light-dark(var(--color-white), currentColor);
+    }
+
+    &::before {
+      margin: var(--inner-spacing);
+    }
+  }
 }
 
 html.presenter body {
