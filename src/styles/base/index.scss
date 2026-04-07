@@ -183,25 +183,6 @@
   display: none;
 }
 
-html.presenter body {
-  display: grid;
-  min-inline-size: fit-content;
-  place-content: center;
-  text-align: center;
-
-  h1 {
-    text-transform: lowercase;
-
-    &::before {
-      content: "[ ";
-    }
-
-    &::after {
-      content: " ]";
-    }
-  }
-}
-
 [data-icon] {
   --icon-size: 1lh;
   --icon-color: currentColor;
