@@ -1,0 +1,106 @@
+@use "helper" as *;
+
+/* -- UTILITY  -- */
+
+.sro,
+[data-sro] {
+  @include sro;
+}
+
+[data-icon] {
+  --icon-size: 1lh;
+  --icon-color: currentColor;
+  --icon-spacing: calc(1lh - 1em);
+  --icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQgMTR2NC40YS42LjYgMCAwIDAgLjYuNkgxMG05LTV2NC40YS42LjYgMCAwIDEtLjYuNkgxNG0wLTE0aDQuNGEuNi42IDAgMCAxIC42LjZWMTBNNCAxMFY1LjZhLjYuNiAwIDAgMSAuNi0uNkgxMG00IDE0djFhMiAyIDAgMSAxLTQgMHYtMW0tNi05aDFhMiAyIDAgMSAxIDAgNEg0bTE1LTRoMWEyIDIgMCAxIDEgMCA0aC0xbS01LTlWNGEyIDIgMCAxIDAtNCAwdjEiLz48L3N2Zz4=");
+
+  &::before,
+  &::after {
+    background-color: var(--icon-color);
+    block-size: var(--icon-size);
+    display: inline-block;
+    inline-size: var(--icon-size);
+    mask-image: var(--icon);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    vertical-align: bottom;
+  }
+
+  &[data-icon=""]::before,
+  &[data-icon="start"]::before,
+  &[data-icon="only"]::before,
+  &[data-icon="end"]::after {
+    content: " ";
+  }
+
+  &[data-icon=""]::before,
+  &[data-icon="start"]::before {
+    margin-inline-end: var(--icon-spacing);
+  }
+
+  &[data-icon="end"]::after {
+    margin-inline-start: var(--icon-spacing);
+  }
+
+  &[data-icon="only"] {
+    display: grid;
+    grid-template-columns: auto 0rem;
+    overflow: hidden;
+    padding-inline: 0;
+    text-wrap: nowrap;
+
+    &:where(span, a, strong, em, mark, del, ins, code, kbd, samp) {
+      display: inline-grid;
+    }
+
+    * {
+      @extend .sro-extended;
+    }
+
+    &::before {
+      place-self: center;
+    }
+  }
+}
+
+html.presenter body {
+  display: grid;
+  grid-auto-rows: 0rem;
+  grid-template-rows: auto auto;
+  min-inline-size: fit-content;
+  place-content: center;
+  text-align: center;
+
+  h1 {
+    text-transform: lowercase;
+
+    &::before {
+      content: "[ ";
+    }
+
+    &::after {
+      content: " ]";
+    }
+  }
+
+  & > :nth-child(n + 3) {
+    display: none;
+  }
+
+  &:has(> :nth-child(n + 3):not(script))::before {
+    background-color: var(--color-red);
+    color: var(--color-white);
+    content: '<html class="presenter"> allows strictly <h1> and <main> as <body> children';
+    inline-size: fit-content;
+    inset-block-start: 0.5em;
+    inset-inline: 0;
+    margin-inline: auto;
+    padding: 0.25em 0.5em;
+    position: fixed;
+  }
+}
+
+/* -- UTILITY [extended]  -- */
+
+.sro-extended {
+  @include sro;
+}
