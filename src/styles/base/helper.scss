@@ -11,10 +11,7 @@
   @return ($px / $rem-base) * 1rem;
 }
 
-/* -- HELPER  -- */
-
-.sro,
-[data-sro] {
+@mixin sro {
   border: 0;
   block-size: 1px;
   clip: rect(0, 0, 0, 0);
@@ -24,6 +21,13 @@
   padding: 0;
   position: absolute;
   white-space: nowrap;
+}
+
+/* -- HELPER  -- */
+
+.sro,
+[data-sro] {
+  @include sro;
 }
 
 html.presenter body {
