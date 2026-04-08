@@ -1,15 +1,24 @@
 const fileSystem = require("fs")
 const path = require("path")
 
-const publicPath = `../public`
+const argName = "--ext="
+const fileExtensions = ((arg) => {
+  if (!arg) return ".*"
+  return arg.match(new RegExp(`${argName}(.*)`))?.[1]?.split(",")?.join("|")
+})(process.argv.find((arg) => arg.startsWith(`${argName}`)))
 
-const gitignorePath = path.join(__dirname, "..", ".gitignore")
-const fileNames = fileSystem.readFileSync(gitignorePath, "utf-8")
-  .split("\n")
-  .filter((line) => line.startsWith("public/"))
-  .map((line) => line.replace("public/", ""))
-
+const publicPath = "../public"
 const filePath = (fileName) => path.join(__dirname, publicPath, fileName)
+
+const gitignorePath = "../.gitignore"
+const gitignorePublicPath = "public/"
+const gitignoreFile = fileSystem.readFileSync(path.join(__dirname, gitignorePath), "utf-8")
+
+const fileNames = gitignoreFile
+  .split("\n")
+  .filter((line) => line.startsWith(gitignorePublicPath))
+  .filter((line) => line.match(new RegExp(`\.(${fileExtensions})`)))
+  .map((line) => line.replace(gitignorePublicPath, ""))
 
 function deleteFile(path) {
   try {
