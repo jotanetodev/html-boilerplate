@@ -4,13 +4,13 @@
   "description": "A minimal starter template for static HTML projects",
   "scripts": {
     "serve": "live-server public --no-browser",
-    "dev": "node scripts/cleanup-public && node scripts/copy-html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run watch:html\" \"npm run serve\"",
     "css:lint": "stylelint \"public/*.css\" --fix",
+    "dev": "node scripts/cleanup-public && node scripts/copy-html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run watch:html\" \"npm run serve\"",
+    "build": "node scripts/cleanup-public && node scripts/copy-html && concurrently \"npm run build:js\" \"npm run build:css\" && node scripts/build-inline-styles && node scripts/cleanup-public --ext=css",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --watch --poll --no-source-map",
     "watch:css:lint": "chokidar \"public/*.css\" --command \"npm run css:lint\" --debounce 500",
     "watch:html": "chokidar \"src/index.html\" --command \"node scripts/copy-html\" --debounce 500",
-    "build": "node scripts/cleanup-public && node scripts/copy-html && concurrently \"npm run build:js\" \"npm run build:css\" && node scripts/build-inline-styles && node scripts/cleanup-public --ext=css",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
     "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map"
   },
