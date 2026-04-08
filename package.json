@@ -1,6 +1,7 @@
 {
   "name": "html-boilerplate",
   "version": "1.0.0",
+  "description": "A minimal starter template for static HTML projects",
   "scripts": {
     "serve": "live-server public --no-browser",
     "dev": "npm run delete:public && npm run copy:html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run serve\"",
