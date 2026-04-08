@@ -1,3 +1,5 @@
+// Read public/index.html, find all linked stylesheets and replace then with an inline <style> tag.
+
 const fileSystem = require("fs")
 const path = require("path")
 

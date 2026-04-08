@@ -1,3 +1,5 @@
+// Remove files in public/ that are listed in .gitignore; optionally filter by file extension(s).
+
 const fileSystem = require("fs")
 const path = require("path")
 

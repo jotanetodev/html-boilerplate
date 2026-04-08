@@ -1,3 +1,5 @@
+// Copy src/index.html to public/index.html.
+
 const fileSystem = require("fs");
 const path = require("path");
 
