@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "scripts": {
     "serve": "live-server public --no-browser",
-    "dev": "npm run copy:html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run serve\"",
+    "dev": "npm run delete:public && npm run copy:html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run serve\"",
     "css:lint": "stylelint \"public/*.css\" --fix",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --watch --poll --no-source-map",
     "watch:css:lint": "chokidar \"public/*.css\" --command \"npm run css:lint\" --debounce 500",
-    "build": "npm run copy:html && npm run build:js && npm run build:css",
+    "build": "npm run delete:public && npm run copy:html && npm run build:js && npm run build:css",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
     "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map",
-    "copy:html": "node scripts/copy-html"
+    "copy:html": "node scripts/copy-html",
+    "delete:public": "node scripts/delete-public-files"
   },
   "devDependencies": {
     "@stylistic/stylelint-plugin": "^5.1.0",
