@@ -12,19 +12,13 @@ const fileNames = fileSystem.readFileSync(gitignorePath, "utf-8")
 const filePath = (fileName) => path.join(__dirname, publicPath, fileName)
 
 function deleteFile(path) {
-  fileSystem.unlink(path, (error) => {
-    if (error) {
-      if (error.code === 'ENOENT') {
-        console.log(`File not found: ${path}`)
-      } else {
-        console.error(`Error deleting file: ${error.message}`)
-      }
-
-      return false
-    }
-
-    console.log(`Deleted: ${path}`)
-  })
+  try {
+    fileSystem.unlinkSync(path)
+  } catch (error) {
+    if (error.code === "ENOENT") return `File not found: ${path}`
+    return error.message
+  }
+  return `Deleted: ${path}`
 }
 
-fileNames.forEach((fileName) => deleteFile(filePath(fileName)))
+fileNames.forEach((fileName) => console.log(deleteFile(filePath(fileName))))
