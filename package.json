@@ -8,7 +8,7 @@
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --watch --poll --no-source-map",
     "watch:css:lint": "chokidar \"public/*.css\" --command \"npm run css:lint\" --debounce 500",
-    "build": "npm run delete:public && npm run copy:html && npm run build:js && npm run build:css",
+    "build": "npm run delete:public && npm run copy:html && npm run build:js && npm run build:css && node scripts/build-inline-styles",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
     "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map",
     "copy:html": "node scripts/copy-html",
