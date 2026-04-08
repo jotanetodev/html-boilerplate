@@ -2,21 +2,23 @@
   "name": "html-boilerplate",
   "version": "1.0.0",
   "scripts": {
-    "serve": "live-server --no-browser",
-    "dev": "concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run serve\"",
+    "serve": "live-server public --no-browser",
+    "dev": "npm run copy:html && concurrently \"npm run watch:css\" \"npm run watch:css:lint\" \"npm run watch:js\" \"npm run serve\"",
     "css:lint": "stylelint \"public/*.css\" --fix",
     "watch:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --watch",
     "watch:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --watch --poll --no-source-map",
     "watch:css:lint": "chokidar \"public/*.css\" --command \"npm run css:lint\" --debounce 500",
-    "build": "npm run build:js && npm run build:css",
+    "build": "npm run copy:html && npm run build:js && npm run build:css",
     "build:js": "esbuild src/scripts/index.js --target=es6 --outfile=public/scripts.js --bundle --minify",
-    "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map"
+    "build:css": "sass src/styles/base/index.scss:public/styles-base.css src/styles/index.scss:public/styles.css --style=compressed --no-source-map",
+    "copy:html": "node scripts/copy-html"
   },
   "devDependencies": {
     "@stylistic/stylelint-plugin": "^5.1.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.20.0",
+    "jsdom": "^29.0.2",
     "live-server": "^1.2.2",
     "sass": "^1.69.5",
     "stylelint": "^17.6.0",
