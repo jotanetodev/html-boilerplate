@@ -36,6 +36,14 @@ function copyFile(sourcePath, destinationPath) {
   }
 }
 
+function deleteFile(filePath) {
+  try {
+    fileSystem.unlinkSync(filePath)
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
 exports.publicPath = publicPath
 exports.sourcePath = sourcePath
 
@@ -48,3 +56,5 @@ exports.argValue = argValue
 
 exports.readFile = readFile
 exports.writeFile = writeFile
+exports.copyFile = copyFile
+exports.deleteFile = deleteFile
