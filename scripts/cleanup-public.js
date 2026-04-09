@@ -1,20 +1,11 @@
 // Remove files in public/ that are listed in .gitignore; optionally filter by file extension(s).
 
-const fileSystem = require("fs")
-const path = require("path")
+const { argValue, pathFor, publicPathFor,readFile, deleteFile } = require("./helper")
 
-const argName = "--ext="
-const fileExtensions = ((arg) => {
-  if (!arg) return ".*"
-  return arg.match(new RegExp(`${argName}(.*)`))?.[1]?.split(",")?.join("|")
-})(process.argv.find((arg) => arg.startsWith(`${argName}`)))
+const fileExtensions = argValue("ext")?.split(",")?.join("|") || ".*"
 
-const publicPath = "../public"
-const filePath = (fileName) => path.join(__dirname, publicPath, fileName)
-
-const gitignorePath = "../.gitignore"
 const gitignorePublicPath = "public/"
-const gitignoreFile = fileSystem.readFileSync(path.join(__dirname, gitignorePath), "utf-8")
+const gitignoreFile = readFile(pathFor("../.gitignore"))
 
 const fileNames = gitignoreFile
   .split("\n")
@@ -22,14 +13,6 @@ const fileNames = gitignoreFile
   .filter((line) => line.match(new RegExp(`\.(${fileExtensions})`)))
   .map((line) => line.replace(gitignorePublicPath, ""))
 
-function deleteFile(path) {
-  try {
-    fileSystem.unlinkSync(path)
-  } catch (error) {
-    if (error.code === "ENOENT") return `File not found: ${path}`
-    return error.message
-  }
-  return `Deleted: ${path}`
-}
+fileNames.forEach((fileName) => deleteFile(publicPathFor(fileName)))
 
-fileNames.forEach((fileName) => console.log(deleteFile(filePath(fileName))))
+console.log(`Cleaned up public/: ${fileExtensions}`);
