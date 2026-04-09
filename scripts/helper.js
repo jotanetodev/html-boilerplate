@@ -28,6 +28,14 @@ function writeFile(filePath, content) {
   }
 }
 
+function copyFile(sourcePath, destinationPath) {
+  try {
+    fileSystem.copyFileSync(sourcePath, destinationPath)
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
 exports.publicPath = publicPath
 exports.sourcePath = sourcePath
 
