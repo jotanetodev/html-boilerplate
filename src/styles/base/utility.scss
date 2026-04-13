@@ -33,7 +33,8 @@
   }
 
   &[data-icon=""]::before,
-  &[data-icon="start"]::before {
+  &[data-icon="start"]::before,
+  &[data-icon="only"]::before {
     margin-inline-end: var(--icon-spacing);
   }
 
