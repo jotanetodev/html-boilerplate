@@ -30,3 +30,8 @@ dl[aria-label="Colors"] {
 main > span[data-icon] + br {
   display: revert;
 }
+
+main > span[data-icon="only"]:hover {
+  text-wrap: revert;
+  grid-template-columns: auto auto;
+}
