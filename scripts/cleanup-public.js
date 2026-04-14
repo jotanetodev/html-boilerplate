@@ -5,7 +5,7 @@ const { argValue, pathFor, publicPathFor,readFile, deleteFile } = require("./hel
 const fileExtensions = argValue("ext")?.split(",")?.join("|") || ".*"
 
 const gitignorePublicPath = "public/"
-const gitignoreFile = readFile(pathFor("../.gitignore"))
+const gitignoreFile = readFile(pathFor(".gitignore"))
 
 const fileNames = gitignoreFile
   .split("\n")

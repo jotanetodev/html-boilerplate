@@ -4,7 +4,7 @@ const path = require("path")
 const publicPath = "public/"
 const sourcePath = "src/"
 
-const pathFor = (relativePath) => path.resolve(__dirname, relativePath)
+const pathFor = (relativePath) => path.resolve(__dirname, "..", relativePath)
 const publicPathFor = (relativePath) => path.resolve(__dirname, `../${publicPath}`, relativePath)
 const sourcePathFor = (relativePath) => path.resolve(__dirname, `../${sourcePath}`, relativePath)
 
