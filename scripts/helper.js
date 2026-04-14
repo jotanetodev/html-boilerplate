@@ -1,5 +1,6 @@
 const fileSystem = require("fs")
 const path = require("path")
+const { execFileSync } = require("child_process")
 
 const publicPath = "public/"
 const sourcePath = "src/"
@@ -44,6 +45,25 @@ function deleteFile(filePath) {
   }
 }
 
+function run(command, args = [], { noArgs = false } = {}) {
+  try {
+    if (!noArgs && args.length <= 0) throw new Error(`No arguments provided to \`${command}\``)
+
+    return execFileSync(command, args, {
+      cwd: pathFor("."),
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).toString().trim()
+  } catch (error) {
+    const stderr = error?.stderr?.toString()?.trim() ?? ""
+
+    if (error.code === "ENOENT") console.error(`Command \`${command}\` not found`)
+    if (error.message.includes("No arguments provided")) console.error(error.message)
+
+    throw new Error(error.message, { cause: { code: error.code, stderr } })
+  }
+}
+
 exports.publicPath = publicPath
 exports.sourcePath = sourcePath
 
@@ -58,3 +78,5 @@ exports.readFile = readFile
 exports.writeFile = writeFile
 exports.copyFile = copyFile
 exports.deleteFile = deleteFile
+
+exports.run = run
