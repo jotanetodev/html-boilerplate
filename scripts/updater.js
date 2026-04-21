@@ -7,7 +7,7 @@ const boilerplateFiles = [
   ".gitignore",
   ".stylelintrc.mjs",
   "package.json",
-  ".github",
+  ".github/",
   "scripts/",
   "src/scripts/base/",
   "src/styles/base/"
