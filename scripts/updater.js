@@ -5,7 +5,6 @@ const { run: runCommand, argValue } = require("./helper")
 const ogURL = "git@github.com:jotanetodev/html-boilerplate.git"
 const boilerplateFiles = [
   ".gitignore",
-  ".gitupdate",
   ".stylelintrc.mjs",
   "package.json",
   ".github",

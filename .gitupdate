@@ -1,8 +1,0 @@
-.gitignore
-.gitupdate
-.stylelintrc.mjs
-package.json
-.github
-scripts/
-src/scripts/base/
-src/styles/base/
