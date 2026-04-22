@@ -38,6 +38,21 @@ function cleanBranch() {
   return run(["status", "--porcelain"]) === ""
 }
 
+function mergeSummary(goBack = 1, branch = currentBranch()) {
+  const summaries = run(["log", branch, `${goBack * -1}`, "--name-status", "--pretty=format:%H"])
+    .split("\n\n")
+    .map((summary) => summary.toString().trim().split("\n"))
+
+  summaries.forEach((summary) => {
+    console.log(summary[0])
+    summary
+      .slice(1)
+      .filter((line) => line.trim() !== "")
+      .map((line) => line.split("\t"))
+      .forEach(([status, file, fileRenamed]) => console.log(status, "\t", file, fileRenamed || ""));
+  })
+}
+
 function update() {
   const url = argValue("from") || ogURL
   const parsedUrl = url.match(/github\.com[:/](?<owner>[^/]+)\/(?<repository>[^/.]+)/)?.groups || {}
@@ -50,6 +65,8 @@ function update() {
 
   const updateFrom = currentBranch()
   const updateTo = `updater-${owner}-${repository}-${branch}`
+
+  const reference = `${url} (${branch})`
 
   if (remoteExists(upstream)) run(["remote", "set-url", upstream, url])
   else run(["remote", "add", upstream, url])
@@ -68,7 +85,7 @@ function update() {
     try {
       run(["restore", "--source", `${upstream}/${branch}`, "--", file])
     } catch (error) {
-      console.warn(`Failed to update \`${file}\` from ${owner}/${repository}@${branch}: ${error.message}`)
+      console.warn(`Failed to update \`${file}\` from ${reference}: ${error.message}`)
     }
   })
 
@@ -79,12 +96,12 @@ function update() {
 
     run(["branch", "--delete", updateTo])
 
-    return console.info(`No changes from ${owner}/${repository}@${branch}`)
+    return console.info(`No changes from ${reference}`)
   }
 
   run(["add", "-A"])
 
-  run(["commit", "-m", `Update from ${owner}/${repository}@${branch}`])
+  run(["commit", "-m", `Update from ${reference}`])
 
   run(["switch", updateFrom])
 
@@ -95,9 +112,12 @@ function update() {
 
     run(["branch", "--delete", updateTo])
 
-    console.info(`Updated from ${owner}/${repository}@${branch}`)
+    console.info(`Updated from ${reference}`)
+    mergeSummary()
   } catch (error) {
-    console.info(`There're changes from ${owner}/${repository}@${branch}; merge manually and delete \`${updateTo}\` afterwards`)
+    console.warn(`There're changes from ${reference}`)
+    console.info(`Merge \`${updateTo}\` manually and delete it afterwards`)
+    mergeSummary(1, updateTo)
   }
 
   run(["remote", "remove", upstream])
