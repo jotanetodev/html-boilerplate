@@ -92,6 +92,28 @@ function tagContentReplace(matches, indexes, content) {
   return matches.filter((_, index) => indexes.includes(index)).map(replaced)
 }
 
+function normalize(string, type) {
+  const translitarated = string.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
+  switch (type) {
+    case "downcase":
+      return translitarated.toLowerCase()
+    case "titlecase":
+      return normalize(string, "kebab")
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+    case "kebabcase":
+      return normalize(string
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[^a-zA-Z0-9]+/g, "-"),
+        "downcase"
+      )
+  }
+
+  return string
+}
+
 exports.publicPath = publicPath
 exports.sourcePath = sourcePath
 
@@ -110,3 +132,5 @@ exports.deleteFile = deleteFile
 exports.run = run
 
 exports.tagContent = tagContent
+
+exports.normalize = normalize
