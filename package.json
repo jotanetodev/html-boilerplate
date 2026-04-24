@@ -18,7 +18,9 @@
     "css:watch": "npm run css:compile -- --watch",
     "css:production": "npm run css:compile -- --style=compressed",
     "css:lint": "stylelint \"public/*.css\" --fix",
-    "css:lint:watch": "npm run css:lint && chokidar \"public/*.css\" --command \"npm run css:lint\""
+    "css:lint:watch": "npm run css:lint && chokidar \"public/*.css\" --command \"npm run css:lint\"",
+    "update:source": "node scripts/updater",
+    "publish": "node scripts/publisher"
   },
   "devDependencies": {
     "@stylistic/stylelint-plugin": "^5.1.0",
