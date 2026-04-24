@@ -64,6 +64,34 @@ function run(command, args = [], { noArgs = false } = {}) {
   }
 }
 
+function tagContent(string, tagName, { index = null, newContent = null } = {}) {
+  if (!string || !tagName) throw new Error("`string` and `tagName` are required parameters")
+
+  const indexes = [index].flat().filter((_) => typeof _ === "number" && _ >= 0)
+  const matches =
+    Array.from(string.matchAll(new RegExp(`<${tagName}>([^<]*)</${tagName}>`, "gi")))
+      .map(([outerHTML, innerHTML]) => [outerHTML, innerHTML])
+  if (matches.length <= 0) return string
+
+  if (newContent === null) return tagContentFetch(matches, indexes)
+  return tagContentReplace(matches, indexes, newContent)
+}
+
+function tagContentFetch(matches, indexes) {
+  if (indexes.length === 0) return matches
+  return matches.filter((_, index) => indexes.includes(index))
+}
+
+function tagContentReplace(matches, indexes, content) {
+  const replaced = ([outerHTML, innerHTML], matchIndex) => [
+    outerHTML,
+    outerHTML.replace(new RegExp(`${innerHTML}`), (Array.isArray(content) ? content[matchIndex] : content) || innerHTML)
+  ]
+
+  if (indexes.length === 0) return matches.map(replaced)
+  return matches.filter((_, index) => indexes.includes(index)).map(replaced)
+}
+
 exports.publicPath = publicPath
 exports.sourcePath = sourcePath
 
@@ -80,3 +108,5 @@ exports.copyFile = copyFile
 exports.deleteFile = deleteFile
 
 exports.run = run
+
+exports.tagContent = tagContent
