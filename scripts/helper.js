@@ -99,7 +99,7 @@ function normalize(string, type) {
     case "downcase":
       return translitarated.toLowerCase()
     case "titlecase":
-      return normalize(string, "kebab")
+      return normalize(string, "kebabcase")
         .split("-")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ")
