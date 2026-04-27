@@ -96,11 +96,11 @@ function tagContentReplace(matches, indexes, content) {
 }
 
 function normalize(string, type) {
-  const translitarated = string.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  const transliterated = string.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
   switch (type) {
     case "downcase":
-      return translitarated.toLowerCase()
+      return transliterated.toLowerCase()
     case "titlecase":
       return normalize(string, "kebabcase")
         .split("-")
