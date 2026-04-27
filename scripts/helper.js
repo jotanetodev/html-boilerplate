@@ -1,6 +1,7 @@
 const fileSystem = require("fs")
 const path = require("path")
 const { execFileSync } = require("child_process")
+const cheerio = require("cheerio")
 
 const publicPath = "public/"
 const sourcePath = "src/"
@@ -67,14 +68,15 @@ function run(command, args = [], { noArgs = false } = {}) {
 function tagContent(string, tagName, { index = null, newContent = null } = {}) {
   if (!string || !tagName) throw new Error("`string` and `tagName` are required parameters")
 
+  const $ = cheerio.load(string)
+
   const indexes = [index].flat().filter((_) => typeof _ === "number" && _ >= 0)
-  const matches =
-    Array.from(string.matchAll(new RegExp(`<${tagName}>([^<]*)</${tagName}>`, "gi")))
-      .map(([outerHTML, innerHTML]) => [outerHTML, innerHTML])
+  const matches = $(tagName).toArray().map(element => [$.html(element), $(element).html(), $(element)])
+
   if (matches.length <= 0) return string
 
   if (newContent === null) return tagContentFetch(matches, indexes)
-  return tagContentReplace(matches, indexes, newContent)
+  return tagContentReplace(matches, indexes, newContent).concat([$.root().html()])
 }
 
 function tagContentFetch(matches, indexes) {
@@ -83,9 +85,10 @@ function tagContentFetch(matches, indexes) {
 }
 
 function tagContentReplace(matches, indexes, content) {
-  const replaced = ([outerHTML, innerHTML], matchIndex) => [
+  const replaced = ([outerHTML, innerHTML, element], matchIndex) => [
     outerHTML,
-    outerHTML.replace(new RegExp(`${innerHTML}`), (Array.isArray(content) ? content[matchIndex] : content) || innerHTML)
+    element.html(Array.isArray(content) ? content[matchIndex] || innerHTML : content).prop("outerHTML"),
+    element
   ]
 
   if (indexes.length === 0) return matches.map(replaced)
