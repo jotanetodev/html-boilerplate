@@ -99,18 +99,18 @@ function normalize(string, type) {
   const transliterated = string.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
   switch (type) {
-    case "downcase":
+    case "lower":
       return transliterated.toLowerCase()
-    case "titlecase":
-      return normalize(string, "kebabcase")
+    case "capitalize":
+      return normalize(string, "kebab")
         .split("-")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ")
-    case "kebabcase":
+    case "kebab":
       return normalize(string
         .replace(/([a-z])([A-Z])/g, "$1 $2")
         .replace(/[^a-zA-Z0-9]+/g, "-"),
-        "downcase"
+        "lower"
       )
   }
 

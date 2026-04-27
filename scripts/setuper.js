@@ -7,8 +7,8 @@ function setup() {
   const htmlPath = sourcePathFor("index.html")
 
   const newContents =
-    [["title", normalize(projectName, "titlecase")],
-    ["h1", normalize(projectName, "titlecase")],
+    [["title", normalize(projectName, "capitalize")],
+    ["h1", normalize(projectName, "capitalize")],
     ["main", `<p><em>${projectDescription}</em></p>`]]
 
   const htmlContent = newContents.reduce(
@@ -18,7 +18,7 @@ function setup() {
 
   writeFile(htmlPath, htmlContent)
 
-  run("npm", ["pkg", "set", `name=${normalize(projectName, "kebabcase")}`])
+  run("npm", ["pkg", "set", `name=${normalize(projectName, "kebab")}`])
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
 }

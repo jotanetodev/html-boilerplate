@@ -18,7 +18,7 @@ function repoOwner() {
 function repoName() {
   return normalize(
     argValue("name") || tagContent(readFile(sourcePathFor("index.html")), "title")[0]?.[1] || "",
-    "kebabcase"
+    "kebab"
   )
 }
 
