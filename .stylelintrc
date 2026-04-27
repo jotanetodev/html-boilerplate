@@ -1,6 +1,6 @@
-export default {
-  plugins: ["stylelint-order", "@stylistic/stylelint-plugin"],
-  rules: {
+{
+  "plugins": ["stylelint-order", "@stylistic/stylelint-plugin"],
+  "rules": {
     "at-rule-empty-line-before": ["always", { "except": ["first-nested"] }],
     "rule-empty-line-before": ["always", { "except": ["first-nested"] }],
     "declaration-empty-line-before": ["always", { "except": ["first-nested", "after-declaration"] }],
@@ -10,6 +10,6 @@ export default {
     "order/order": ["custom-properties", "declarations"],
 
     "@stylistic/selector-list-comma-space-after": "never",
-    "@stylistic/selector-list-comma-newline-after": "always",
+    "@stylistic/selector-list-comma-newline-after": "always"
   }
-};
+}
