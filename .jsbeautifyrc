@@ -1,6 +1,16 @@
 {
   "preserve_newlines": true,
-  "max_preserve_newlines": 2,
+  "max_preserve_newlines": 1,
   "wrap_line_length": 0,
-  "indent_size": 2
+  "indent_size": 2,
+  "html": {
+    "unformatted": [
+      "script",
+      "style"
+    ],
+    "content_unformatted": [
+      "script",
+      "style"
+    ]
+  }
 }
