@@ -30,7 +30,7 @@
 
     "watch": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\"",
     
-    "update:source": "node scripts/updater",
+    "update": "node scripts/updater",
     "publish": "node scripts/publisher"
   },
   "devDependencies": {
