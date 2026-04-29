@@ -4,7 +4,7 @@
   "description": "A minimal starter template for static HTML projects",
   "scripts": {
     "serve": "live-server public --no-browser",
-    "serve:development": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\" \"npm run serve\"",
+    "serve:development": "npm run watch -- \"npm run serve\"",
     "serve:production": "npm run compile:production && npm run serve",
 
     "compile:development": "npm run html:compile && npm run js:compile && npm run css:compile && npm run html:lint && npm run js:lint && npm run css:lint",
@@ -27,6 +27,8 @@
     "css:production": "npm run css:compile -- --style=compressed",
     "css:lint": "stylelint \"public/*.css\" --fix",
     "css:lint:watch": "npm run css:lint && chokidar \"public/*.css\" --command \"npm run css:lint\"",
+
+    "watch": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\"",
     
     "update:source": "node scripts/updater",
     "publish": "node scripts/publisher"
