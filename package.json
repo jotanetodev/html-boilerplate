@@ -4,10 +4,10 @@
   "description": "A minimal starter template for static HTML projects",
   "scripts": {
     "serve": "live-server public --no-browser",
-    "serve:development": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run css:lint:watch\" \"npm run serve\"",
+    "serve:development": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\" \"npm run serve\"",
     "serve:production": "npm run compile:production && npm run serve",
-    "compile:development": "npm run html:compile && npm run js:compile && npm run css:compile && npm run css:lint",
-    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles && node scripts/inline-scripts && node scripts/cleanup-public --ext=js,css",
+    "compile:development": "npm run html:compile && npm run js:compile && npm run css:compile && npm run html:lint && npm run js:lint && npm run css:lint",
+    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles && node scripts/inline-scripts && node scripts/cleanup-public --ext=js,css && npm run html:lint",
     "html:compile": "node scripts/copy-html",
     "html:watch": "npm run html:compile && chokidar \"src/index.html\" --command \"npm run html:compile\"",
     "html:production": "npm run html:compile",
