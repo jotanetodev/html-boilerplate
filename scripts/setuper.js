@@ -1,4 +1,11 @@
-const { argValue, pathFor, sourcePathFor, readFile, writeFile, run, HTMLElementContent, HTMLElementAttribute, normalize } = require("./helper")
+const {
+  argValue,
+  pathFor, sourcePathFor,
+  readFile, writeFile,
+  run,
+  HTMLElementContent, HTMLElementAttribute,
+  normalize
+} = require("./helper")
 
 function setup() {
   const htmlPath = sourcePathFor("index.html")
@@ -33,7 +40,7 @@ function setup() {
   )
 
   writeFile(htmlPath, htmlContent)
-  
+
   run("npx", ["js-beautify", htmlPath, "--replace"])
 
   run("npm", ["pkg", "set", `name=${normalize(projectName, "kebab")}`])
