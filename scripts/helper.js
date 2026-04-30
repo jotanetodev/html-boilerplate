@@ -1,7 +1,7 @@
 const fileSystem = require("fs")
 const path = require("path")
 const { execFileSync } = require("child_process")
-const cheerio = require("cheerio")
+const { JSDOM } = require("jsdom")
 
 const publicPath = "public/"
 const sourcePath = "src/"
@@ -65,34 +65,40 @@ function run(command, args = [], { noArgs = false } = {}) {
   }
 }
 
-function tagContent(string, tagName, { index = null, newContent = null } = {}) {
-  if (!string || !tagName) throw new Error("`string` and `tagName` are required parameters")
-
-  const $ = cheerio.load(string)
-
-  const indexes = [index].flat().filter((_) => typeof _ === "number" && _ >= 0)
-  const matches = $(tagName).toArray().map(element => [$.html(element), $(element).html(), $(element)])
-
-  if (matches.length <= 0) return string
-
-  if (newContent === null) return tagContentFetch(matches, indexes)
-  return tagContentReplace(matches, indexes, newContent).concat([$.root().html()])
+function HTMLDOM(HTMLString) {
+  return new JSDOM(HTMLString)
 }
 
-function tagContentFetch(matches, indexes) {
-  if (indexes.length === 0) return matches
-  return matches.filter((_, index) => indexes.includes(index))
+function HTMLElement(HTMLString, selector, { getDOM = true, remove = false } = {}) {
+  const DOM = HTMLDOM(HTMLString)
+  const elements =
+    [...DOM.window.document.querySelectorAll(selector)].map((element) => {
+      if (remove === true) element.remove()
+      return element
+    })
+
+  if (getDOM) return elements.concat(DOM)
+  return elements
 }
 
-function tagContentReplace(matches, indexes, content) {
-  const replaced = ([outerHTML, innerHTML, element], matchIndex) => [
-    outerHTML,
-    element.html(Array.isArray(content) ? content[matchIndex] || innerHTML : content).prop("outerHTML"),
-    element
-  ]
+function HTMLElementContent(HTMLString, selector, { getDOM = true, newContent = undefined } = {}) {
+  return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
+    if (element.constructor.name === "JSDOM") return element
 
-  if (indexes.length === 0) return matches.map(replaced)
-  return matches.filter((_, index) => indexes.includes(index)).map(replaced)
+    if (newContent !== undefined) element.innerHTML = newContent
+    return element.innerHTML
+  })
+}
+
+function HTMLElementAttribute(HTMLString, selector, attributeName, { getDOM = true, newValue = undefined, remove = false } = {}) {
+  return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
+    if (element.constructor.name === "JSDOM") return element
+
+    if (newValue !== undefined) element.setAttribute(attributeName, newValue)
+    const value = element.getAttribute(attributeName)
+    if (remove === true) element.removeAttribute(attributeName)
+    return value
+  })
 }
 
 function normalize(string, type) {
@@ -134,6 +140,8 @@ exports.deleteFile = deleteFile
 
 exports.run = run
 
-exports.tagContent = tagContent
+exports.HTMLElement = HTMLElement
+exports.HTMLElementContent = HTMLElementContent
+exports.HTMLElementAttribute = HTMLElementAttribute
 
 exports.normalize = normalize

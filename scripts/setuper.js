@@ -1,4 +1,4 @@
-const { argValue, pathFor, sourcePathFor, readFile, writeFile, run, tagContent, normalize } = require("./helper")
+const { argValue, pathFor, sourcePathFor, readFile, writeFile, run, HTMLElementContent, HTMLElementAttribute, normalize } = require("./helper")
 
 function setup() {
   const projectName = argValue("name") || pathFor(".").split("/").slice(-1)[0]
@@ -11,10 +11,11 @@ function setup() {
     ["h1", normalize(projectName, "capitalize")],
     ["main", `<p><em>${projectDescription}</em></p>`]]
 
-  const htmlContent = newContents.reduce(
-    (content, [tagName, newContent]) => tagContent(content, tagName, { index: 0, newContent }).slice(-1)[0],
-    readFile(htmlPath)
-  )
+  const htmlContent =
+    newContents.reduce(
+      (content, [selector, newContent]) => HTMLElementContent(content, selector, { newContent }).slice(-1)[0].serialize(),
+      readFile(htmlPath)
+    )
 
   writeFile(htmlPath, htmlContent)
 
