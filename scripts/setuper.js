@@ -1,11 +1,12 @@
 const { argValue, pathFor, sourcePathFor, readFile, writeFile, run, HTMLElementContent, HTMLElementAttribute, normalize } = require("./helper")
 
 function setup() {
+  const htmlPath = sourcePathFor("index.html")
+  let htmlContent = readFile(htmlPath)
+
   const projectName = argValue("name") || pathFor(".").split("/").slice(-1)[0]
   const projectDescription = argValue("description") ||
     "A minimal starter template for static HTML projects; forked from https://github.com/jotanetodev/html-boilerplate"
-
-  const htmlPath = sourcePathFor("index.html")
 
   const newContents =
     [["title", normalize(projectName, "capitalize")],
@@ -17,10 +18,10 @@ function setup() {
       </p>
     `]]
 
-  const htmlContent =
+  htmlContent =
     newContents.reduce(
       (content, [selector, newContent]) => HTMLElementContent(content, selector, { newContent }).slice(-1)[0].serialize(),
-      readFile(htmlPath)
+      htmlContent
     )
 
   writeFile(htmlPath, htmlContent)
