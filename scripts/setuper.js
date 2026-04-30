@@ -33,6 +33,8 @@ function setup() {
   )
 
   writeFile(htmlPath, htmlContent)
+  
+  run("npx", ["js-beautify", htmlPath, "--replace"])
 
   run("npm", ["pkg", "set", `name=${normalize(projectName, "kebab")}`])
   run("npm", ["pkg", "set", `version=1.0.0`])
