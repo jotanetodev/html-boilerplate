@@ -8,7 +8,7 @@ function setup() {
   const projectDescription = argValue("description") ||
     "A minimal starter template for static HTML projects; forked from https://github.com/jotanetodev/html-boilerplate"
 
-  const newContents =
+  const newElementContents =
     [["title", normalize(projectName, "capitalize")],
     ["h1", normalize(projectName, "capitalize")],
     ["main", `
@@ -19,10 +19,18 @@ function setup() {
     `]]
 
   htmlContent =
-    newContents.reduce(
+    newElementContents.reduce(
       (content, [selector, newContent]) => HTMLElementContent(content, selector, { newContent }).slice(-1)[0].serialize(),
       htmlContent
     )
+
+  const newAttributeValues =
+    [["meta[name=description]", "content", projectDescription]]
+
+  htmlContent = newAttributeValues.reduce(
+    (content, [selector, name, newValue]) => HTMLElementAttribute(content, selector, name, { newValue }).slice(-1)[0].serialize(),
+    htmlContent
+  )
 
   writeFile(htmlPath, htmlContent)
 
