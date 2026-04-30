@@ -35,3 +35,20 @@ main > span[data-icon="only"]:hover {
   text-wrap: revert;
   grid-template-columns: auto auto;
 }
+
+fieldset:has(label[data-icon="only"]) {
+  counter-reset: options 0;
+
+  label:has([type="radio"], [type="checkbox"]) {
+    position: relative;
+  
+    &::after {
+      content: counter(options);
+      counter-increment: options;
+      position: absolute;
+      place-self: center;
+      font-size: calc(var(--icon-size) * 0.5);
+    }
+  }
+}
+
