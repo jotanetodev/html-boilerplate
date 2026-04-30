@@ -65,8 +65,12 @@ function publishRepo(visibility = argValue("visibility") || "public") {
   if (!validVisibility.includes(visibility))
     throw new Error(`Invalid visibility; valid: ${validVisibility.join(", ")}`)
 
-  run(["repo", "create", repoName(), `--${visibility}`, `--source="${pathFor(".")}"`, "--push"])
+  runCommand("git", ["remote", "remove", "origin"])
+
+  run(["repo", "create", repoName(), `--${visibility}`, `--source=${pathFor(".")}`])
+
   runCommand("git", ["remote", "set-url", "origin", repoURL()])
+  runCommand("git", ["push", "--set-upstream", "origin", "main"])
 
   console.info("Github repository created and set as `origin`")
 }
