@@ -2,14 +2,20 @@ const { argValue, pathFor, sourcePathFor, readFile, writeFile, run, HTMLElementC
 
 function setup() {
   const projectName = argValue("name") || pathFor(".").split("/").slice(-1)[0]
-  const projectDescription = argValue("description") || "Project forked from jotanetodev/html-boilerplate"
+  const projectDescription = argValue("description") ||
+    "A minimal starter template for static HTML projects; forked from https://github.com/jotanetodev/html-boilerplate"
 
   const htmlPath = sourcePathFor("index.html")
 
   const newContents =
     [["title", normalize(projectName, "capitalize")],
     ["h1", normalize(projectName, "capitalize")],
-    ["main", `<p><em>${projectDescription}</em></p>`]]
+    ["main", `
+      <p>Hello, ${normalize(projectName, "capitalize")}!</p>
+      <p>Forked from
+        <a href="https://github.com/jotanetodev/html-boilerplate" target="_blank">jotanetodev/html-boilerplate</a>
+      </p>
+    `]]
 
   const htmlContent =
     newContents.reduce(
