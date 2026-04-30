@@ -30,8 +30,8 @@
 
     "watch": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\"",
     "setup": "node scripts/setuper --",
-    "update": "node scripts/updater",
-    "publish": "node scripts/publisher"
+    "update": "node scripts/updater --",
+    "publish": "node scripts/publisher --"
   },
   "devDependencies": {
     "@stylistic/stylelint-plugin": "^5.1.0",
