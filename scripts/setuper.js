@@ -46,6 +46,9 @@ function setup() {
   run("npm", ["pkg", "set", `name=${normalize(projectName, "kebab")}`])
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
+  
+  run("git", ["add", "-A"])
+  run("git", ["commit", "-m", `Initial setup for ${normalize(projectName, "kebab")}`])
 }
 
 setup()
