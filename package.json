@@ -40,7 +40,7 @@
     "concurrently": "^8.2.2",
     "esbuild": "^0.25.12",
     "js-beautify": "^1.15.4",
-    "jsdom": "^22.1.0",
+    "linkedom": "^0.18.12",
     "http-server": "^14.1.1",
     "sass": "^1.69.5",
     "stylelint": "^16.26.1",

@@ -1,7 +1,7 @@
 const fileSystem = require("fs")
 const path = require("path")
 const { execFileSync } = require("child_process")
-const { JSDOM } = require("jsdom")
+const { parseHTML } = require("linkedom")
 
 const publicPath = "public/"
 const sourcePath = "src/"
@@ -65,14 +65,25 @@ function run(command, args = [], { noArgs = false } = {}) {
   }
 }
 
+class HTMLDocumentWrapper {
+  constructor(document) {
+    this.document = document
+  }
+
+  serialize() {
+    return this.document.toString()
+  }
+}
+
 function HTMLDOM(HTMLString) {
-  return new JSDOM(HTMLString)
+  const { document } = parseHTML(HTMLString)
+  return new HTMLDocumentWrapper(document)
 }
 
 function HTMLElement(HTMLString, selector, { getDOM = true, remove = false } = {}) {
   const DOM = HTMLDOM(HTMLString)
   const elements =
-    [...DOM.window.document.querySelectorAll(selector)].map((element) => {
+    [...DOM.document.querySelectorAll(selector)].map((element) => {
       if (remove === true) element.remove()
       return element
     })
@@ -83,7 +94,7 @@ function HTMLElement(HTMLString, selector, { getDOM = true, remove = false } = {
 
 function HTMLElementContent(HTMLString, selector, { getDOM = true, newContent = undefined } = {}) {
   return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
-    if (element.constructor.name === "JSDOM") return element
+    if (element instanceof HTMLDocumentWrapper) return element
 
     if (newContent !== undefined) element.innerHTML = newContent
     return element.innerHTML
@@ -92,7 +103,7 @@ function HTMLElementContent(HTMLString, selector, { getDOM = true, newContent = 
 
 function HTMLElementAttribute(HTMLString, selector, attributeName, { getDOM = true, newValue = undefined, remove = false } = {}) {
   return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
-    if (element.constructor.name === "JSDOM") return element
+    if (element instanceof HTMLDocumentWrapper) return element
 
     if (newValue !== undefined) element.setAttribute(attributeName, newValue)
     const value = element.getAttribute(attributeName)
