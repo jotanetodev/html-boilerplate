@@ -34,8 +34,8 @@
     "publish": "node scripts/publisher"
   },
   "devDependencies": {
-    "@stylistic/stylelint-plugin": "^5.1.0",
-    "cheerio": "^1.2.0",
+    "@stylistic/stylelint-plugin": "^4.0.1",
+    "cheerio": "1.0.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^8.2.2",
     "esbuild": "^0.20.0",
@@ -43,7 +43,7 @@
     "jsdom": "^22.1.0",
     "live-server": "^1.2.2",
     "sass": "^1.69.5",
-    "stylelint": "^17.6.0",
-    "stylelint-order": "^8.1.1"
+    "stylelint": "^16.26.1",
+    "stylelint-order": "^6.0.4"
   }
 }
