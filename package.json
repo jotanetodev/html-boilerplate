@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A minimal starter template for static HTML projects",
   "scripts": {
-    "serve": "live-server public --no-browser",
+    "serve": "http-server public",
     "serve:development": "npm run watch -- \"npm run serve\"",
     "serve:production": "npm run compile:production && npm run serve",
 
@@ -41,7 +41,7 @@
     "esbuild": "^0.20.0",
     "js-beautify": "^1.15.4",
     "jsdom": "^22.1.0",
-    "live-server": "^1.2.2",
+    "http-server": "^14.1.1",
     "sass": "^1.69.5",
     "stylelint": "^16.26.1",
     "stylelint-order": "^6.0.4"
