@@ -1,6 +1,7 @@
 {
   "name": "html-boilerplate",
   "version": "1.0.0",
+  "type": "module",
   "description": "A minimal starter template for static HTML projects",
   "scripts": {
     "serve": "http-server public",
