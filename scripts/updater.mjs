@@ -1,6 +1,6 @@
 // Update boilerplate files from an upstream GitHub repository.
 
-const { run: runCommand, argValue } = require("./helper")
+import { run as runCommand, argValue } from "./helper.mjs"
 
 const ogURL = "git@github.com:jotanetodev/html-boilerplate.git"
 const boilerplateFiles = [

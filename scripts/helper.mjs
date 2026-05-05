@@ -1,7 +1,11 @@
-const fileSystem = require("fs")
-const path = require("path")
-const { execFileSync } = require("child_process")
-const { parseHTML } = require("linkedom")
+import * as fileSystem from "node:fs"
+import * as path from "node:path"
+import { execFileSync } from "node:child_process"
+import { fileURLToPath } from "node:url"
+import { parseHTML } from "linkedom"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const publicPath = "public/"
 const sourcePath = "src/"
@@ -134,25 +138,21 @@ function normalize(string, type) {
   return string
 }
 
-exports.publicPath = publicPath
-exports.sourcePath = sourcePath
-
-exports.pathFor = pathFor
-exports.publicPathFor = publicPathFor
-exports.sourcePathFor = sourcePathFor
-
-exports.arg = arg
-exports.argValue = argValue
-
-exports.readFile = readFile
-exports.writeFile = writeFile
-exports.copyFile = copyFile
-exports.deleteFile = deleteFile
-
-exports.run = run
-
-exports.HTMLElement = HTMLElement
-exports.HTMLElementContent = HTMLElementContent
-exports.HTMLElementAttribute = HTMLElementAttribute
-
-exports.normalize = normalize
+export {
+  publicPath,
+  sourcePath,
+  pathFor,
+  publicPathFor,
+  sourcePathFor,
+  arg,
+  argValue,
+  readFile,
+  writeFile,
+  copyFile,
+  deleteFile,
+  run,
+  HTMLElement,
+  HTMLElementContent,
+  HTMLElementAttribute,
+  normalize,
+}

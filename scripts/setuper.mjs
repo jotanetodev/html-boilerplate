@@ -1,11 +1,11 @@
-const {
+import {
   argValue,
   pathFor, sourcePathFor,
   readFile, writeFile,
   run,
   HTMLElementContent, HTMLElementAttribute,
   normalize
-} = require("./helper")
+} from "./helper.mjs"
 
 function setup() {
   const htmlPath = sourcePathFor("index.html")

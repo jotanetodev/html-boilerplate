@@ -1,8 +1,6 @@
 // Remove files in public/ that are listed in .gitignore; optionally filter by file extension(s).
 
-import helper from "./helper.js"
-
-const { argValue, pathFor, publicPathFor, readFile, deleteFile } = helper
+import { argValue, pathFor, publicPathFor, readFile, deleteFile } from "./helper.mjs"
 
 const fileExtensions = argValue("ext")?.split(",")?.join("|") || ".*"
 

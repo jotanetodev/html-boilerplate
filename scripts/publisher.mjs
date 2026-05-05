@@ -1,4 +1,4 @@
-const { argValue, pathFor, sourcePathFor, readFile, run: runCommand, HTMLElementContent, normalize } = require("./helper")
+import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLElementContent, normalize } from "./helper.mjs"
 
 function run(args) {
   try {

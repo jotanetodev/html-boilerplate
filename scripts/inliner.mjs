@@ -1,8 +1,6 @@
 // Inline source files into tags of public/index.html.
 
-import helper from "./helper.js"
-
-const { publicPathFor, readFile, writeFile } = helper
+import { publicPathFor, readFile, writeFile } from "./helper.mjs"
 
 function inline(finder, inlineTagName) {
   const htmlPath = publicPathFor("index.html")
