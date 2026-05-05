@@ -5,7 +5,7 @@ import {
   run,
   HTMLElementContent, HTMLElementAttribute,
   normalize
-} from "./helper.mjs"
+} from "./helper.js"
 
 function setup() {
   const htmlPath = sourcePathFor("index.html")

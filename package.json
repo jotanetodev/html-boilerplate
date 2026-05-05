@@ -9,9 +9,9 @@
     "serve:production": "npm run compile:production && npm run serve",
 
     "compile:development": "npm run html:compile && npm run js:compile && npm run css:compile && npm run html:lint && npm run js:lint && npm run css:lint",
-    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles.mjs && node scripts/inline-scripts.mjs && node scripts/cleanup-public.mjs --ext=js,css && npm run html:lint",
+    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles.js && node scripts/inline-scripts.js && node scripts/cleanup-public.js --ext=js,css && npm run html:lint",
     
-    "html:compile": "node scripts/copy-html.mjs",
+    "html:compile": "node scripts/copy-html.js",
     "html:watch": "npm run html:compile && chokidar \"src/index.html\" --command \"npm run html:compile\"",
     "html:production": "npm run html:compile",
     "html:lint": "js-beautify \"public/*.html\" --replace",
@@ -30,9 +30,9 @@
     "css:lint:watch": "npm run css:lint && chokidar \"public/*.css\" --command \"npm run css:lint\"",
 
     "watch": "concurrently \"npm run html:watch\" \"npm run js:watch\" \"npm run css:watch\" \"npm run html:lint:watch \"npm run js:lint:watch \"npm run css:lint:watch\"",
-    "setup": "node scripts/setuper.mjs",
-    "update": "node scripts/updater.mjs",
-    "publish": "node scripts/publisher.mjs"
+    "setup": "node scripts/setuper.js",
+    "update": "node scripts/updater.js",
+    "publish": "node scripts/publisher.js"
   },
   "devDependencies": {
     "@stylistic/stylelint-plugin": "^4.0.1",

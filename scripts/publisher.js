@@ -1,4 +1,4 @@
-import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLElementContent, normalize } from "./helper.mjs"
+import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLElementContent, normalize } from "./helper.js"
 
 function run(args) {
   try {

@@ -1,6 +1,6 @@
 // Copy src/index.html to public/index.html.
 
-import { publicPathFor, sourcePathFor, copyFile } from "./helper.mjs"
+import { publicPathFor, sourcePathFor, copyFile } from "./helper.js"
 
 const fileName = "index.html";
 
