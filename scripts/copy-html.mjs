@@ -1,6 +1,8 @@
 // Copy src/index.html to public/index.html.
 
-const { publicPathFor, sourcePathFor, copyFile } = require("./helper")
+import helper from "./helper.js"
+
+const { publicPathFor, sourcePathFor, copyFile } = helper
 
 const fileName = "index.html";
 

@@ -8,9 +8,9 @@
     "serve:production": "npm run compile:production && npm run serve",
 
     "compile:development": "npm run html:compile && npm run js:compile && npm run css:compile && npm run html:lint && npm run js:lint && npm run css:lint",
-    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles && node scripts/inline-scripts && node scripts/cleanup-public --ext=js,css && npm run html:lint",
+    "compile:production": "npm run html:production && npm run js:production && npm run css:production && node scripts/inline-styles.mjs && node scripts/inline-scripts.mjs && node scripts/cleanup-public.mjs --ext=js,css && npm run html:lint",
     
-    "html:compile": "node scripts/copy-html",
+    "html:compile": "node scripts/copy-html.mjs",
     "html:watch": "npm run html:compile && chokidar \"src/index.html\" --command \"npm run html:compile\"",
     "html:production": "npm run html:compile",
     "html:lint": "js-beautify \"public/*.html\" --replace",

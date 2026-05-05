@@ -1,6 +1,8 @@
 // Inline source files into tags of public/index.html.
 
-const { publicPathFor, readFile, writeFile } = require("./helper")
+import helper from "./helper.js"
+
+const { publicPathFor, readFile, writeFile } = helper
 
 function inline(finder, inlineTagName) {
   const htmlPath = publicPathFor("index.html")
@@ -27,4 +29,4 @@ function inline(finder, inlineTagName) {
   return true
 }
 
-exports.inline = inline
+export { inline }
