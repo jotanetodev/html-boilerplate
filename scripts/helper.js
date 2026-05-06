@@ -10,6 +10,22 @@ const __dirname = path.dirname(__filename)
 const publicPath = "public/"
 const sourcePath = "src/"
 
+const mimeTypeByExtension = {
+  ".avif": "image/avif",
+  ".css": "text/css",
+  ".gif": "image/gif",
+  ".html": "text/html",
+  ".ico": "image/x-icon",
+  ".jpeg": "image/jpeg",
+  ".jpg": "image/jpeg",
+  ".js": "text/javascript",
+  ".json": "application/json",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".txt": "text/plain",
+  ".webp": "image/webp",
+}
+
 const pathFor = (relativePath) => path.resolve(__dirname, "..", relativePath)
 const publicPathFor = (relativePath) => path.resolve(__dirname, `../${publicPath}`, relativePath)
 const sourcePathFor = (relativePath) => path.resolve(__dirname, `../${sourcePath}`, relativePath)
@@ -21,6 +37,22 @@ const argValue = (argName) => arg(argName)?.match(new RegExp(`^${normalizeArgNam
 function readFile(filePath) {
   try {
     return fileSystem.readFileSync(filePath, "utf-8")
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+function readFileAsBase64(filePath, { forHTMLAttribute = true, mimeType } = {}) {
+  try {
+    const base64Content = fileSystem.readFileSync(filePath).toString("base64")
+
+    if (forHTMLAttribute !== true) return base64Content
+
+    const fileExtension = path.extname(filePath).toLowerCase()
+    const resolvedMimeType =
+      mimeType ?? mimeTypeByExtension[fileExtension] ?? "application/octet-stream"
+
+    return `data:${resolvedMimeType};base64,${base64Content}`
   } catch (error) {
     console.error(error.message)
   }
@@ -147,6 +179,7 @@ export {
   arg,
   argValue,
   readFile,
+  readFileAsBase64,
   writeFile,
   copyFile,
   deleteFile,
