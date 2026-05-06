@@ -1,30 +1,54 @@
 // Inline source files into tags of public/index.html.
 
-import { publicPathFor, readFile, writeFile } from "./helper.js"
+import { publicPathFor, readFile, readFileAsBase64, writeFile, HTMLElement } from "./helper.js"
 
-function inline(finder, inlineTagName) {
-  const htmlPath = publicPathFor("index.html")
-  const htmlContent = readFile(htmlPath)
+function tagInliner(document, elements, filePathAttribute, inlineTag) {
+  const content = elements
+    .map((element) => element.getAttribute(filePathAttribute))
+    .map((filePath) => readFile(publicPathFor(filePath)))
+    .join("")
+    .replace(/\n/g, "")
 
-  const match = Array.from(htmlContent.matchAll(finder))
+  return elements.map((element, index) => {
+    if (index > 0) return element.remove()
 
-  if (match.length <= 0) {
-    console.warn(`No tags found with finder: ${finder}`)
-    return false
-  }
+    const newElement = document.createElement(inlineTag)
 
-  const fetchContent = (filepath) => readFile(publicPathFor(filepath)) || ""
+    newElement.innerHTML = content
+    element.replaceWith(newElement)
 
-  const originalTags = match.map(([tag]) => tag)
-  const originalContents = match.map(([, filePath]) => fetchContent(filePath)).join("").replaceAll(/\r?\n/g, "")
-  const inlineTag = `<${inlineTagName}>${originalContents}</${inlineTagName}>`
-  const updatedHtmlContent = htmlContent.replace(originalTags[0], `${inlineTag}${originalTags[0]}`).replaceAll(finder, "")
-
-  writeFile(htmlPath, updatedHtmlContent)
-
-  console.log(`Inlined <${inlineTagName}> into ${htmlPath}`)
-
-  return true
+    return newElement.outerHTML
+  })
 }
+
+function attributeInliner(elements, filePathAttribute) {
+  return elements.map((element) => {
+    const content = readFileAsBase64(publicPathFor(element.getAttribute(filePathAttribute)))
+
+    element.setAttribute(filePathAttribute, content)
+
+    return element.outerHTML
+  })
+}
+
+function inline(htmlPath, selector, filePathAttribute, { inlineTag = null } = {}) {
+  const DOMString = readFile(htmlPath)
+  const entities = HTMLElement(DOMString, selector)
+
+  const DOM = entities.slice(-1)[0]
+  const document = DOM.document
+  const elements = entities.slice(0, -1)
+
+  if (inlineTag) tagInliner(document, elements, filePathAttribute, inlineTag)
+  else attributeInliner(elements, filePathAttribute)
+
+  writeFile(htmlPath, DOM.serialize())
+
+  console.log(`Inlined "${selector}" into ${htmlPath}`)
+}
+
+inline(publicPathFor("index.html"), "head > link[rel=stylesheet]", "href", { inlineTag: "style" })
+inline(publicPathFor("index.html"), "head > script[src]", "src", { inlineTag: "script" })
+inline(publicPathFor("index.html"), "head > link[rel=icon]", "href")
 
 export { inline }
