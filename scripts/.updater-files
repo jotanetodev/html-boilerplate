@@ -1,0 +1,10 @@
+.github/workflows/deploy-pages.yml
+.jsbeautifyrc
+.stylelintrc
+scripts/helper.js
+scripts/inliner.js
+scripts/publisher.js
+scripts/setuper.js
+scripts/updater.js
+src/scripts/base/
+src/styles/base/

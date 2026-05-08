@@ -1,16 +1,6 @@
 // Update boilerplate files from an upstream GitHub repository.
 
-import { ogURL, run as runCommand } from "./helper.js"
-
-const boilerplateFiles = [
-  ".gitignore",
-  ".stylelintrc.mjs",
-  "package.json",
-  ".github/",
-  "scripts/",
-  "src/scripts/base/",
-  "src/styles/base/"
-]
+import { ogURL, pathFor, readFile, run as runCommand } from "./helper.js"
 
 function run(args) {
   try {
@@ -52,6 +42,24 @@ function mergeSummary(goBack = 1, branch = currentBranch()) {
   })
 }
 
+function restore(source, reference, file) {
+  try {
+    run(["restore", "--source", `${source}`, "--", file])
+    return true
+  } catch (error) {
+    console.warn(`Failed to update \`${file}\` from ${reference}: ${error.message}`)
+    return false
+  }
+}
+
+function abort(updateFrom, updateTo) {
+  run(["switch", updateFrom])
+
+  run(["stash", "pop"])
+
+  run(["branch", "--delete", updateTo])
+}
+
 function update() {
   const url = argValue("from") || ogURL.ssh
   const parsedUrl = url.match(/github\.com[:/](?<owner>[^/]+)\/(?<repository>[^/.]+)/)?.groups || {}
@@ -65,6 +73,7 @@ function update() {
   const updateFrom = currentBranch()
   const updateTo = `updater-${owner}-${repository}-${branch}`
 
+  const source = `${upstream}/${branch}`
   const reference = `${url} (${branch})`
 
   if (remoteExists(upstream)) run(["remote", "set-url", upstream, url])
@@ -80,25 +89,23 @@ function update() {
 
   run(["reset", "--hard", `${updateFrom}`])
 
-  boilerplateFiles.forEach((file) => {
-    try {
-      run(["restore", "--source", `${upstream}/${branch}`, "--", file])
-    } catch (error) {
-      console.warn(`Failed to update \`${file}\` from ${reference}: ${error.message}`)
-    }
-  })
+  if (!restore(source, reference, "scripts/.updater-files")) {
+    abort(updateFrom, updateTo)
+
+    return console.error(`Failed to update`)
+  }
+
+  const fileToUpdate = readFile(pathFor("scripts/.updater-files")).split("\n").filter((fileName) => fileName)
+
+  fileToUpdate.forEach((file) => restore(source, reference, file))
 
   if (cleanBranch()) {
-    run(["switch", updateFrom])
-
-    run(["stash", "pop"])
-
-    run(["branch", "--delete", updateTo])
+    abort(updateFrom, updateTo)
 
     return console.info(`No changes from ${reference}`)
   }
 
-  run(["add", "-A"])
+  fileToUpdate.forEach((file) => run(["add", file]))
 
   run(["commit", "-m", `Update from ${reference}`])
 
