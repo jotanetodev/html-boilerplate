@@ -1,5 +1,6 @@
 import {
   ogURL, buildProjectName, buildProjectDescription,
+  argValue,
   sourcePathFor,
   readFile, writeFile,
   run,
@@ -7,7 +8,18 @@ import {
   normalize,
 } from "./helper.js"
 
+function clean(file) {
+  return run("git", ["status", "--porcelain", "--", file]) === ""
+}
+
+function changed(file) {
+  return run("git", ["diff", "HEAD", file]) !== ""
+}
+
 function setup() {
+  if (!clean("package.json") || !clean("src/index.html"))
+    return console.error("Files `package.json` and `src/index.html` must be clean before setup")
+
   const HTMLPath = sourcePathFor("index.html")
   const document = HTMLDocument(readFile(HTMLPath))
 
@@ -19,7 +31,8 @@ function setup() {
   const commitHash = run("git", ["log", `--grep=${commitMessage}`, "--format=%H"])
     .split("\n")?.[0]
 
-  if (commitHash) return console.warn(`Project was set up at ${commitHash}`)
+  if (typeof argValue("force") !== "string" && commitHash)
+    return console.warn(`Project was set up at ${commitHash}`)
 
   const newElementContents = [
     ["title", projectName.capital],
@@ -52,8 +65,13 @@ function setup() {
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
 
+  if (!changed("package.json") && !changed("src/index.html"))
+    return console.warn("Nothing changed on setup")
+
   run("git", ["add", "package.json", "src/index.html"])
   run("git", ["commit", "-m", `${commitMessage}`])
+
+  console.info(`${commitMessage} complete and committed`)
 }
 
 setup()
