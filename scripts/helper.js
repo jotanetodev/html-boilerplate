@@ -112,40 +112,7 @@ class HTMLDocumentWrapper {
 }
 
 function HTMLDOM(HTMLString) {
-  const { document } = parseHTML(HTMLString)
-  return new HTMLDocumentWrapper(document)
-}
-
-function HTMLElement(HTMLString, selector, { getDOM = true, remove = false } = {}) {
-  const DOM = HTMLDOM(HTMLString)
-  const elements =
-    [...DOM.document.querySelectorAll(selector)].map((element) => {
-      if (remove === true) element.remove()
-      return element
-    })
-
-  if (getDOM) return elements.concat(DOM)
-  return elements
-}
-
-function HTMLElementContent(HTMLString, selector, { getDOM = true, newContent = undefined } = {}) {
-  return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
-    if (element instanceof HTMLDocumentWrapper) return element
-
-    if (newContent !== undefined) element.innerHTML = newContent
-    return element.innerHTML
-  })
-}
-
-function HTMLElementAttribute(HTMLString, selector, attributeName, { getDOM = true, newValue = undefined, remove = false } = {}) {
-  return HTMLElement(HTMLString, selector, { getDOM }).map((element) => {
-    if (element instanceof HTMLDocumentWrapper) return element
-
-    if (newValue !== undefined) element.setAttribute(attributeName, newValue)
-    const value = element.getAttribute(attributeName)
-    if (remove === true) element.removeAttribute(attributeName)
-    return value
-  })
+  return new HTMLDocumentWrapper(parseHTML(HTMLString).document)
 }
 
 function normalize(string, type) {
@@ -185,8 +152,5 @@ export {
   deleteFile,
   run,
   HTMLDOM,
-  HTMLElement,
-  HTMLElementContent,
-  HTMLElementAttribute,
   normalize,
 }
