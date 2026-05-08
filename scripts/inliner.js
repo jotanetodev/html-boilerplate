@@ -1,46 +1,37 @@
 // Inline source files into tags of public/index.html.
 
-import { publicPathFor, readFile, readFileAsBase64, writeFile, HTMLElement } from "./helper.js"
+import { publicPathFor, readFile, readFileAsBase64, writeFile, HTMLDOM } from "./helper.js"
 
-function tagInliner(document, elements, filePathAttribute, inlineTag) {
-  const content = elements
-    .map((element) => element.getAttribute(filePathAttribute))
-    .map((filePath) => readFile(publicPathFor(filePath)))
-    .join("")
-    .replace(/\n/g, "")
+function tagInliner(document, elementFilePaths, inlineTag) {
+  const newElement = document.createElement(inlineTag)
+  const content = elementFilePaths.map(([, path]) => readFile(path))
+    .filter((fileContent) => fileContent)
+    .join("").replace(/\n/g, "")
 
-  return elements.map((element, index) => {
-    if (index > 0) return element.remove()
-
-    const newElement = document.createElement(inlineTag)
-
-    newElement.innerHTML = content
-    element.replaceWith(newElement)
-
-    return newElement.outerHTML
-  })
+  newElement.innerHTML = content
+  elementFilePaths[0]?.[0].replaceWith(newElement)
+  elementFilePaths.slice(1).forEach(([element,]) => element.remove())
 }
 
-function attributeInliner(elements, filePathAttribute) {
-  return elements.map((element) => {
-    const content = readFileAsBase64(publicPathFor(element.getAttribute(filePathAttribute)))
+function attributeInliner(filePathAttribute, elementFilePaths) {
+  const elementFileContents = elementFilePaths.map(([element, path]) =>
+    [element, readFileAsBase64(path)]
+  ).filter(([, fileContent]) => fileContent)
 
+  elementFileContents.forEach(([element, content]) => {
     element.setAttribute(filePathAttribute, content)
-
-    return element.outerHTML
   })
 }
 
 function inline(htmlPath, selector, filePathAttribute, { inlineTag = null } = {}) {
-  const DOMString = readFile(htmlPath)
-  const entities = HTMLElement(DOMString, selector)
-
-  const DOM = entities.slice(-1)[0]
-  const document = DOM.document
-  const elements = entities.slice(0, -1)
-
-  if (inlineTag) tagInliner(document, elements, filePathAttribute, inlineTag)
-  else attributeInliner(elements, filePathAttribute)
+  const DOM = HTMLDOM(readFile(htmlPath))
+  const { document } = DOM
+  const elementFilePaths = document.querySelectorAll(selector).map((element) =>
+    [element, publicPathFor(element.getAttribute(filePathAttribute))]
+  )
+  
+  if (inlineTag) tagInliner(document, elementFilePaths, inlineTag)
+  else attributeInliner(filePathAttribute, elementFilePaths)
 
   writeFile(htmlPath, DOM.serialize())
 
