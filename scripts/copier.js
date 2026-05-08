@@ -2,8 +2,10 @@
 
 import { publicPathFor, sourcePathFor, copyFile } from "./helper.js"
 
-const fileName = "index.html";
+const fileNames = ["favicon.svg", "index.html"]
 
-copyFile(sourcePathFor(fileName), publicPathFor(fileName));
-
-console.log(`Copied ${fileName} from src/ to public/`);
+fileNames.forEach((fileName) => {
+  copyFile(sourcePathFor(fileName), publicPathFor(fileName))
+  
+  console.info(`Copied ${fileName} from src/ to public/`)
+})
