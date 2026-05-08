@@ -1,18 +1,15 @@
 // Remove files in public/ that are listed in .gitignore; optionally filter by file extension(s).
 
-import { argValue, pathFor, publicPathFor, readFile, deleteFile } from "./helper.js"
+import { publicPath, pathFor, readFile, deleteFile } from "./helper.js"
 
-const fileExtensions = argValue("ext")?.split(",")?.join("|") || ".*"
+const ignoreExtensions = ["html"].join("|")
 
-const gitignorePublicPath = "public/"
-const gitignoreFile = readFile(pathFor(".gitignore"))
-
-const fileNames = gitignoreFile
+const fileNames = readFile(pathFor(".gitignore"))
   .split("\n")
-  .filter((line) => line.startsWith(gitignorePublicPath))
-  .filter((line) => line.match(new RegExp(`\.(${fileExtensions})`)))
-  .map((line) => line.replace(gitignorePublicPath, ""))
+  .filter((line) => line.trim())
+  .filter((path) => path.startsWith(publicPath))
+  .filter((path) => !path.match(new RegExp(`\.(${ignoreExtensions})`)))
+  
+fileNames.forEach((path) => deleteFile(pathFor(path)))
 
-fileNames.forEach((fileName) => deleteFile(publicPathFor(fileName)))
-
-console.log(`Cleaned up public/: ${fileExtensions}`);
+console.info(`Cleaned up \`public/\` (${fileNames.join(", ")})`)
