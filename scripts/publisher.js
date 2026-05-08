@@ -1,4 +1,4 @@
-import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLElementContent, normalize } from "./helper.js"
+import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLDOM, normalize } from "./helper.js"
 
 function run(args) {
   try {
@@ -17,7 +17,8 @@ function repoOwner() {
 
 function repoName() {
   return normalize(
-    argValue("name") || HTMLElementContent(readFile(sourcePathFor("index.html")), "title")[0],
+    argValue("name") ||
+    HTMLDOM(readFile(sourcePathFor("index.html"))).document.querySelector("title")?.textContent,
     "kebab"
   )
 }
