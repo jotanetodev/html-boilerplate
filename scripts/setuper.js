@@ -17,10 +17,12 @@ function changed(file) {
 }
 
 function setup() {
-  if (!clean("package.json") || !clean("src/index.html"))
+  if (!clean("package.json") || !clean("src/index.html") || !clean("src/styles/index.scss"))
     return console.error("Files `package.json` and `src/index.html` must be clean before setup")
 
   const HTMLPath = sourcePathFor("index.html")
+  const SCSSPath = sourcePathFor("styles/index.scss")
+
   const document = HTMLDocument(readFile(HTMLPath))
 
   const projectName = ((name) =>
@@ -58,6 +60,7 @@ function setup() {
   )
 
   writeFile(HTMLPath, document.toString())
+  writeFile(SCSSPath, "\n")
 
   run("npx", ["js-beautify", HTMLPath, "--replace"])
 
@@ -65,7 +68,7 @@ function setup() {
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
 
-  if (!changed("package.json") && !changed("src/index.html"))
+  if (!changed("package.json") && !changed("src/index.html") && !changed("src/styles/index.scss"))
     return console.warn("Nothing changed on setup")
 
   run("git", ["add", "package.json", "src/index.html"])
