@@ -1,8 +1,7 @@
 // Update boilerplate files from an upstream GitHub repository.
 
-import { run as runCommand, argValue } from "./helper.js"
+import { ogURL, run as runCommand } from "./helper.js"
 
-const ogURL = "git@github.com:jotanetodev/html-boilerplate.git"
 const boilerplateFiles = [
   ".gitignore",
   ".stylelintrc.mjs",
@@ -54,7 +53,7 @@ function mergeSummary(goBack = 1, branch = currentBranch()) {
 }
 
 function update() {
-  const url = argValue("from") || ogURL
+  const url = argValue("from") || ogURL.ssh
   const parsedUrl = url.match(/github\.com[:/](?<owner>[^/]+)\/(?<repository>[^/.]+)/)?.groups || {}
 
   const { owner, repository } = parsedUrl

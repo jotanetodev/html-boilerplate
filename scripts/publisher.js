@@ -1,4 +1,4 @@
-import { argValue, pathFor, sourcePathFor, readFile, run as runCommand, HTMLDocument, normalize } from "./helper.js"
+import { buildProjectName, argValue, pathFor, run as runCommand, normalize } from "./helper.js"
 
 function run(args) {
   try {
@@ -16,11 +16,7 @@ function repoOwner() {
 }
 
 function repoName() {
-  return normalize(
-    argValue("name") ||
-    HTMLDocument(readFile(sourcePathFor("index.html"))).querySelector("title")?.textContent,
-    "kebab"
-  )
+  return normalize(buildProjectName(), "kebab")
 }
 
 function repoPath() {
@@ -84,9 +80,9 @@ function enablePage() {
 
   if (exists && pageInfo()["build_type"].match(/workflow/i))
     return console.warn("Github Pages already enabled with build type \"workflow\"")
-  
+
   const method = exists ? "PUT" : "POST"
-  
+
   run(["api", "-X", `${method}`, `repos/${repoPath()}/pages`, "-f", "build_type=workflow"])
 
   console.info("Github Pages enabled and configured to deploy when `main` is pushed")

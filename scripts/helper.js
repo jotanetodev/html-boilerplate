@@ -7,6 +7,19 @@ import { parseHTML } from "linkedom"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const ogURL = {
+  http: "https://github.com/jotanetodev/html-boilerplate",
+  ssh: "git@github.com:jotanetodev/html-boilerplate.git"
+}
+
+const buildProjectName = () =>
+  argValue("name") ||
+  pathFor(".").split("/").slice(-1)[0]
+
+const buildProjectDescription = () =>
+  argValue("description") ||
+  `A minimal starter template for static HTML projects; forked from ${ogURL.http}`
+
 const publicPath = "public/"
 const sourcePath = "src/"
 
@@ -102,7 +115,11 @@ function run(command, args = [], { noArgs = false } = {}) {
 }
 
 function HTMLDocument(HTMLString) {
-  return parseHTML(HTMLString).document
+  try {
+    return parseHTML(HTMLString).document
+  } catch (error) {
+    console.error(error.message)
+  }
 }
 
 function normalize(string, type) {
@@ -128,6 +145,9 @@ function normalize(string, type) {
 }
 
 export {
+  ogURL,
+  buildProjectName,
+  buildProjectDescription,
   publicPath,
   sourcePath,
   pathFor,

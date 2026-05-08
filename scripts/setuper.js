@@ -1,42 +1,33 @@
 import {
-  argValue,
-  pathFor, sourcePathFor,
+  ogURL, buildProjectName, buildProjectDescription,
+  sourcePathFor,
   readFile, writeFile,
   run,
   HTMLDocument,
   normalize,
 } from "./helper.js"
 
-const ogURL = "https://github.com/jotanetodev/html-boilerplate"
-
 function setup() {
   const HTMLPath = sourcePathFor("index.html")
   const document = HTMLDocument(readFile(HTMLPath))
 
-  const projectName = ((name) => {
-    return {
-      capitalized: normalize(name, "capitalize"),
-      kebabed: normalize(name, "kebab")
-    }
-  })(argValue("name") || pathFor(".").split("/").slice(-1)[0])
+  const projectName = ((name) =>
+    ({ capital: normalize(name, "capitalize"), kebab: normalize(name, "kebab") }))(buildProjectName())
+  const projectDescription = buildProjectDescription()
 
-  const projectDescription =
-    argValue("description") ||
-    `A minimal starter template for static HTML projects; forked from ${ogURL}`
-
-  const commitMessage = `Initial setup for ${projectName.kebabed}`
+  const commitMessage = `Initial setup for ${projectName.kebab}`
   const commitHash = run("git", ["log", `--grep=${commitMessage}`, "--format=%H"])
     .split("\n")?.[0]
 
   if (commitHash) return console.warn(`Project was set up at ${commitHash}`)
 
   const newElementContents = [
-    ["title", projectName.capitalized],
-    ["body > h1", projectName.capitalized],
+    ["title", projectName.capital],
+    ["body > h1", projectName.capital],
     ["main", `
-      <p>Hello, ${projectName.capitalized}!</p>
+      <p>Hello, ${projectName.capital}!</p>
       <p>Forked from
-        <a href="${ogURL}" target="_blank">
+        <a href="${ogURL.http}" target="_blank">
           jotanetodev/html-boilerplate
         </a>
       </p>
@@ -57,7 +48,7 @@ function setup() {
 
   run("npx", ["js-beautify", HTMLPath, "--replace"])
 
-  run("npm", ["pkg", "set", `name=${projectName.kebabed}`])
+  run("npm", ["pkg", "set", `name=${projectName.kebab}`])
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
 
