@@ -3,52 +3,66 @@ import {
   pathFor, sourcePathFor,
   readFile, writeFile,
   run,
-  HTMLElementContent, HTMLElementAttribute,
-  normalize
+  HTMLDOM,
+  normalize,
 } from "./helper.js"
 
+const ogURL = "https://github.com/jotanetodev/html-boilerplate"
+
 function setup() {
-  const htmlPath = sourcePathFor("index.html")
-  let htmlContent = readFile(htmlPath)
+  const HTMLPath = sourcePathFor("index.html")
+  const DOM = HTMLDOM(readFile(HTMLPath))
 
-  const projectName = argValue("name") || pathFor(".").split("/").slice(-1)[0]
-  const projectDescription = argValue("description") ||
-    "A minimal starter template for static HTML projects; forked from https://github.com/jotanetodev/html-boilerplate"
+  const projectName = ((name) => {
+    return {
+      capitalized: normalize(name, "capitalize"),
+      kebabed: normalize(name, "kebab")
+    }
+  })(argValue("name") || pathFor(".").split("/").slice(-1)[0])
 
-  const newElementContents =
-    [["title", normalize(projectName, "capitalize")],
-    ["h1", normalize(projectName, "capitalize")],
+  const projectDescription =
+    argValue("description") ||
+    `A minimal starter template for static HTML projects; forked from ${ogURL}`
+
+  const commitMessage = `Initial setup for ${projectName.kebabed}`
+  const commitHash = run("git", ["log", `--grep=${commitMessage}`, "--format=%H"])
+    .split("\n")?.[0]
+
+  if (commitHash) return console.warn(`Project was set up at ${commitHash}`)
+
+  const newElementContents = [
+    ["title", projectName.capitalized],
+    ["body > h1", projectName.capitalized],
     ["main", `
-      <p>Hello, ${normalize(projectName, "capitalize")}!</p>
+      <p>Hello, ${projectName.capitalized}!</p>
       <p>Forked from
-        <a href="https://github.com/jotanetodev/html-boilerplate" target="_blank">jotanetodev/html-boilerplate</a>
+        <a href="${ogURL}" target="_blank">
+          jotanetodev/html-boilerplate
+        </a>
       </p>
     `]]
-
-  htmlContent =
-    newElementContents.reduce(
-      (content, [selector, newContent]) => HTMLElementContent(content, selector, { newContent }).slice(-1)[0].serialize(),
-      htmlContent
-    )
 
   const newAttributeValues =
     [["meta[name=description]", "content", projectDescription]]
 
-  htmlContent = newAttributeValues.reduce(
-    (content, [selector, name, newValue]) => HTMLElementAttribute(content, selector, name, { newValue }).slice(-1)[0].serialize(),
-    htmlContent
+  newElementContents.forEach(([selector, newContent]) =>
+    DOM.document.querySelector(selector).innerHTML = newContent
   )
 
-  writeFile(htmlPath, htmlContent)
+  newAttributeValues.forEach(([selector, attributeName, newValue]) =>
+    DOM.document.querySelector(selector).setAttribute(attributeName, newValue)
+  )
 
-  run("npx", ["js-beautify", htmlPath, "--replace"])
+  writeFile(HTMLPath, DOM.serialize())
 
-  run("npm", ["pkg", "set", `name=${normalize(projectName, "kebab")}`])
+  run("npx", ["js-beautify", HTMLPath, "--replace"])
+
+  run("npm", ["pkg", "set", `name=${projectName.kebabed}`])
   run("npm", ["pkg", "set", `version=1.0.0`])
   run("npm", ["pkg", "set", `description=${projectDescription}`])
-  
-  run("git", ["add", "-A"])
-  run("git", ["commit", "-m", `Initial setup for ${normalize(projectName, "kebab")}`])
+
+  run("git", ["add", "package.json", "src/index.html"])
+  run("git", ["commit", "-m", `${commitMessage}`])
 }
 
 setup()
