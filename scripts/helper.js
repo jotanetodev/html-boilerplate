@@ -184,6 +184,7 @@ export {
   copyFile,
   deleteFile,
   run,
+  HTMLDOM,
   HTMLElement,
   HTMLElementContent,
   HTMLElementAttribute,
