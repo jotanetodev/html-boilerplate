@@ -1,6 +1,6 @@
 // Inline source files into tags of public/index.html.
 
-import { publicPathFor, readFile, readFileAsBase64, writeFile, HTMLDOM } from "./helper.js"
+import { publicPathFor, readFile, readFileAsBase64, writeFile, HTMLDocument } from "./helper.js"
 
 function tagInliner(document, elementFilePaths, inlineTag) {
   const newElement = document.createElement(inlineTag)
@@ -24,8 +24,7 @@ function attributeInliner(filePathAttribute, elementFilePaths) {
 }
 
 function inline(htmlPath, selector, filePathAttribute, { inlineTag = null } = {}) {
-  const DOM = HTMLDOM(readFile(htmlPath))
-  const { document } = DOM
+  const document = HTMLDocument(readFile(htmlPath))
   const elementFilePaths = document.querySelectorAll(selector).map((element) =>
     [element, publicPathFor(element.getAttribute(filePathAttribute))]
   )
@@ -33,7 +32,7 @@ function inline(htmlPath, selector, filePathAttribute, { inlineTag = null } = {}
   if (inlineTag) tagInliner(document, elementFilePaths, inlineTag)
   else attributeInliner(filePathAttribute, elementFilePaths)
 
-  writeFile(htmlPath, DOM.serialize())
+  writeFile(htmlPath, document.toString())
 
   console.log(`Inlined "${selector}" into ${htmlPath}`)
 }

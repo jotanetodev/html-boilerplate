@@ -101,18 +101,8 @@ function run(command, args = [], { noArgs = false } = {}) {
   }
 }
 
-class HTMLDocumentWrapper {
-  constructor(document) {
-    this.document = document
-  }
-
-  serialize() {
-    return this.document.toString()
-  }
-}
-
-function HTMLDOM(HTMLString) {
-  return new HTMLDocumentWrapper(parseHTML(HTMLString).document)
+function HTMLDocument(HTMLString) {
+  return parseHTML(HTMLString).document
 }
 
 function normalize(string, type) {
@@ -151,6 +141,6 @@ export {
   copyFile,
   deleteFile,
   run,
-  HTMLDOM,
+  HTMLDocument,
   normalize,
 }

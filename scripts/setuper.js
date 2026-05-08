@@ -3,7 +3,7 @@ import {
   pathFor, sourcePathFor,
   readFile, writeFile,
   run,
-  HTMLDOM,
+  HTMLDocument,
   normalize,
 } from "./helper.js"
 
@@ -11,7 +11,7 @@ const ogURL = "https://github.com/jotanetodev/html-boilerplate"
 
 function setup() {
   const HTMLPath = sourcePathFor("index.html")
-  const DOM = HTMLDOM(readFile(HTMLPath))
+  const document = HTMLDocument(readFile(HTMLPath))
 
   const projectName = ((name) => {
     return {
@@ -46,14 +46,14 @@ function setup() {
     [["meta[name=description]", "content", projectDescription]]
 
   newElementContents.forEach(([selector, newContent]) =>
-    DOM.document.querySelector(selector).innerHTML = newContent
+    document.querySelector(selector).innerHTML = newContent
   )
 
   newAttributeValues.forEach(([selector, attributeName, newValue]) =>
-    DOM.document.querySelector(selector).setAttribute(attributeName, newValue)
+    document.querySelector(selector).setAttribute(attributeName, newValue)
   )
 
-  writeFile(HTMLPath, DOM.serialize())
+  writeFile(HTMLPath, document.toString())
 
   run("npx", ["js-beautify", HTMLPath, "--replace"])
 
