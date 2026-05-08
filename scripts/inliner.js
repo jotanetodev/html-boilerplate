@@ -40,5 +40,3 @@ function inline(htmlPath, selector, filePathAttribute, { inlineTag = null } = {}
 inline(publicPathFor("index.html"), "head > link[rel=stylesheet]", "href", { inlineTag: "style" })
 inline(publicPathFor("index.html"), "head > script[src]", "src", { inlineTag: "script" })
 inline(publicPathFor("index.html"), "head > link[rel=icon]", "href")
-
-export { inline }
